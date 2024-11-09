@@ -4,8 +4,7 @@ by Alan Paeth
 from "Graphics Gems", Academic Press, 1990
 */
 
-int remap8(R, G, B, R2, G2, B2)
-    float R, G, B, *R2, *G2, *B2;
+int remap8(float R, float G, float B, float *R2, float *G2, float *B2)
     {
 /*
  * remap8 maps floating (R,G,B) triples onto quantized
@@ -36,8 +35,7 @@ float gval[] = { 0.,.5 , 0., 0.,.5 , 1., 0.,.5,
 float bval[] = { 0., 0.,.5 , 0.,.5 , 0., 1.,.5,
                 .5 , 0., 1.,.5 , 1.,.5 , 1., 1.};
 
-int remap14(R, G, B,  R2, G2, B2)
-    float R, G, B, *R2, *G2, *B2;
+int remap14(float R, float G, float B,  float *R2, float *G2, float *B2)
     {
     int code = 0;
     if ( R + G + B > 1.5) code |= 8;

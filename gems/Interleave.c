@@ -41,17 +41,13 @@ int bytemask[B_MAX_DEPTH + 1] = {017,
      037777740017,037777770017,037777776017,037777777417,
      037777777717,037777777777};
 
-
-long *interleave(addr, x, y, depth, max_depth)
+long *interleave(long *addr, int x, int y, int depth, int max_depth)
 /* Return the interleaved code for a quadtree node at depth depth 
 whose upper left hand corner has coordinates (x, y) in a tree with maximum
 depth max_depth.  This function receives and returns a 
 pointer to addr, which is either a long integer or (more typically)
 an array of long integers whose first integer contains the 
 interleaved code. */
- long *addr;
- int max_depth, depth;
- int x, y;
 {
 
 /* Scale x, y values to be consistent with maximum coord size */
@@ -77,8 +73,6 @@ interleaved code. */
  return (addr);
 }
 
-
-
 /* The next two arrays are used in calculating the (x, y) coordinates
    of the upper left-hand corner of a node from its bit interleaved
    address.  Given an 8 bit number, the arrays return the effect of
@@ -101,7 +95,6 @@ int xval[256] = { 0, 1, 0, 1, 2, 3, 2, 3, 0, 1, 0, 1, 2, 3, 2, 3,
 		         8, 9, 8, 9,10,11,10,11, 8, 9, 8, 9,10,11,10,11,
 		        12,13,12,13,14,15,14,15,12,13,12,13,14,15,14,15};
 
-
 int yval[256] = { 0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 3, 3, 2, 2, 3, 3,
 		      0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 3, 3, 2, 2, 3, 3,
 		      4, 4, 5, 5, 4, 4, 5, 5, 6, 6, 7, 7, 6, 6, 7, 7,
@@ -119,15 +112,9 @@ int yval[256] = { 0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 3, 3, 2, 2, 3, 3,
 		     12,12,13,13,12,12,13,13,14,14,15,15,14,14,15,15,
 		     12,12,13,13,12,12,13,13,14,14,15,15,14,14,15,15};
 
-
-
-
-
-int getx(addr, max_depth)
+int getx(long *addr, int max_depth)
 /* Return the x coordinate of the upper left hand corner of addr for a
    tree with maximum depth max_depth. */
- long *addr;
- int max_depth;
 {
  int x;
 
@@ -139,14 +126,9 @@ int getx(addr, max_depth)
  return (x);
 }
 
-
-
-int QKy(addr, max_depth)
+int QKy(long *addr, int max_depth)
 /* Return the y coordinate of the upper left hand corner of addr for a
    tree with maximum depth max_depth. */
-
- long *addr;
- int max_depth;
 {
  int y;
 
@@ -158,10 +140,8 @@ int QKy(addr, max_depth)
  return (y);
 }
 
-int getdepth(addr)
+int getdepth(long *addr)
 /* Return the depth of the node.  Simply return the bottom 4 bits. */
-
- long *addr;
 {
 
  return(*addr & 017);

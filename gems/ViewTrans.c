@@ -16,9 +16,7 @@ from "Grahics Gems", Academic Press, 1990
 
 typedef float Transform[4][3];
 
-void BuildViewTransform( VRP, EP, UP, T )
-	 Point3 VRP, EP, UP;
-	 Transform T;
+void BuildViewTransform(Point3 VRP, Point3 EP, Point3 UP, Transform T )
 {
 	Vector3	U, V, N;
 	float	dot;

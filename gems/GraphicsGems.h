@@ -136,12 +136,14 @@ if (!(x)) fprintf(stderr," Assert failed: x\n");
 typedef int boolean;			/* boolean data type */
 typedef boolean flag;			/* flag data type */
 
-extern double V2SquaredLength(), V2Length();
-extern double V2Dot(), V2DistanceBetween2Points(); 
-extern Vector2 *V2Negate(), *V2Normalize(), *V2Scale(), *V2Add(), *V2Sub();
-extern Vector2 *V2Lerp(), *V2Combine(), *V2Mul(), *V2MakePerpendicular();
-extern Vector2 *V2New(), *V2Duplicate();
-extern Point2 *V2MulPointByMatrix();
+extern double V2SquaredLength(Vector2*), V2Length(Vector2*);
+extern double V2Dot(Vector2*, Vector2*), V2DistanceBetween2Points(); 
+extern Vector2 *V2Negate(Vector2*), *V2Normalize(Vector2*), *V2Scale(Vector2*, double);
+extern Vector2 *V2Add(Vector2*, Vector2*, Vector2*), *V2Sub(Vector2*, Vector2*, Vector2*);
+extern Vector2 *V2Lerp(Vector2*, Vector2*, double, Vector2 *);
+extern Vector2 *V2Combine(Vector2*), *V2Mul(Vector2*), *V2MakePerpendicular(Vector2*);
+extern Vector2 *V2New(Vector2*), *V2Duplicate(Vector2*);
+extern Point2 *V2MulPointByMatrix(Vector2*);
 extern Matrix3 *V2MatMul();
 
 extern double V3SquaredLength(), V3Length();

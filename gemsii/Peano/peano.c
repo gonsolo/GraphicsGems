@@ -14,7 +14,6 @@
  * but it works.
  */
 
-
 #include "types.h"
 
 // global variables from types.h
@@ -28,8 +27,7 @@ byte bitmask[MAX_DIMENSIONS];
 /*
  * build "rho" array
  */
-void build_rho(point)
-int             point;
+void build_rho(int point)
 {
 	int	i, mask=bytemask;
 
@@ -44,8 +42,7 @@ int             point;
 /*
  * find principal position of "a_byte" 
  */
-int principal_pos(a_byte)
-byte            a_byte;
+int principal_pos(byte a_byte)
 {
 	int             nth_bit, i=1;
 
@@ -174,10 +171,7 @@ void build_alpha()
 /*
  * initialize "array" to zeros 
  */
-void zero(array)
-
-	r_array         array;
-
+void zero(r_array array)
 {
 	int             i;
 
@@ -190,9 +184,7 @@ void zero(array)
 /*
  * convert "alpha" array into n_space coordinate vector 
  */
-void v_convert(alph, coord)
-r_array         alph;
-vector          coord;
+void v_convert(r_array alph, vector coord)
 {
 	int             i, j, bit, a_bitmask=1;
 

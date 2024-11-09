@@ -12,40 +12,33 @@ from "Graphics Gems", Academic Press, 1990
 /******************/
 
 /* returns squared length of input vector */	
-double V2SquaredLength(a) 
-Vector2 *a;
+double V2SquaredLength(Vector2 *a) 
 {	return((a->x * a->x)+(a->y * a->y));
 	}
 	
 /* returns length of input vector */
-double V2Length(a) 
-Vector2 *a;
+double V2Length(Vector2 *a) 
 {
 	return(sqrt(V2SquaredLength(a)));
 	}
 	
 /* negates the input vector and returns it */
-Vector2 *V2Negate(v) 
-Vector2 *v;
+Vector2 *V2Negate(Vector2 *v) 
 {
 	v->x = -v->x;  v->y = -v->y;
 	return(v);
 	}
 
 /* normalizes the input vector and returns it */
-Vector2 *V2Normalize(v) 
-Vector2 *v;
+Vector2 *V2Normalize(Vector2 *v) 
 {
 double len = V2Length(v);
 	if (len != 0.0) { v->x /= len;  v->y /= len; }
 	return(v);
 	}
 
-
 /* scales the input vector to the new length and returns it */
-Vector2 *V2Scale(v, newlen) 
-Vector2 *v;
-double newlen;
+Vector2 *V2Scale(Vector2 *v, double newlen) 
 {
 double len = V2Length(v);
 	if (len != 0.0) { v->x *= newlen/len;   v->y *= newlen/len; }
@@ -53,24 +46,21 @@ double len = V2Length(v);
 	}
 
 /* return vector sum c = a+b */
-Vector2 *V2Add(a, b, c)
-Vector2 *a, *b, *c;
+Vector2 *V2Add(Vector2 *a, Vector2 *b, Vector2 *c)
 {
 	c->x = a->x+b->x;  c->y = a->y+b->y;
 	return(c);
 	}
 	
 /* return vector difference c = a-b */
-Vector2 *V2Sub(a, b, c)
-Vector2 *a, *b, *c;
+Vector2 *V2Sub(Vector2 *a, Vector2 *b, Vector2 *c)
 {
 	c->x = a->x-b->x;  c->y = a->y-b->y;
 	return(c);
 	}
 
 /* return the dot product of vectors a and b */
-double V2Dot(a, b) 
-Vector2 *a, *b; 
+double V2Dot(Vector2 *a, Vector2 *b) 
 {
 	return((a->x*b->x)+(a->y*b->y));
 	}
@@ -78,15 +68,12 @@ Vector2 *a, *b;
 /* linearly interpolate between vectors by an amount alpha */
 /* and return the resulting vector. */
 /* When alpha=0, result=lo.  When alpha=1, result=hi. */
-Vector2 *V2Lerp(lo, hi, alpha, result) 
-Vector2 *lo, *hi, *result; 
-double alpha;
+Vector2 *V2Lerp(Vector2 *lo, Vector2 *hi, double alpha, Vector2 *result) 
 {
 	result->x = LERP(alpha, lo->x, hi->x);
 	result->y = LERP(alpha, lo->y, hi->y);
 	return(result);
 	}
-
 
 /* make a linear combination of two vectors and return the result. */
 /* result = (a * ascl) + (b * bscl) */
@@ -209,8 +196,7 @@ Vector3 *v;
 	}
 
 /* normalizes the input vector and returns it */
-Vector3 *V3Normalize(v) 
-Vector3 *v;
+Vector3 *V3Normalize(Vector3 *v) 
 {
 double len = V3Length(v);
 	if (len != 0.0) { v->x /= len;  v->y /= len; v->z /= len; }

@@ -23,7 +23,7 @@ void plot(int x, int y, int flag)
 }
 
 void
-symwuline(a1, b1, a2, b2) int a1, b1, a2, b2;
+symwuline(int a1, int b1, int a2, int b2)
 {
 	int           dx, dy, incr1, incr2, D, x, y, xend, c, pixels_left;
 	int           x1, y1;

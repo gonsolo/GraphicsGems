@@ -5,13 +5,16 @@
 #define FI(x)	(*(int *)&x)
 
 /********************************************************/
-void xform_ctp4(vc, vpi, vpo, visiz, vosiz, mtx, prj, pf, pa)
-	int vc	;	/* vertex count */
-int visiz;	/* input vertex array stride */
-int vosiz;	/* output vertex array stride */
-int *pf;	/* flag array */
-int *pa;	/* 2 element - global or_flag, and_flag */
-float *vpi, *vpo, *mtx, *prj;
+void xform_ctp4(
+                int vc,         /* vertex count */
+                float *vpi,
+                float *vpo,
+                int visiz,      /* input vertex array stride */
+                int vosiz,      /* output vertex array stride */
+                float *mtx,
+                float *prj,
+                int *pf,        /* flag array */
+                int *pa)        /* 2 element - global or_flag, and_flag */
 {
 	register int flag, flag_or, flag_and;
 

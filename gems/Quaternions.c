@@ -6,8 +6,7 @@ from "Graphics Gems", Academic Press, 1990
 
 extern double P[3], Q[4], M[4][4];
 
-void set_obs_position(x,y,z)
-float	x, y, z;
+void set_obs_position(float x, float y, float z)
 {
 int	i;
 
@@ -26,9 +25,7 @@ int	i;
   	for (i = 1; i < 4; i++) Q[i] = 0.;
 }
 
-void translate_quaternion(x,i,w)
-float	x;
-int	i, w;
+void translate_quaternion(float x, int i, int w)
 {
 int	j, k;
 float	A, B, D, E, F;
@@ -55,9 +52,7 @@ float	A, B, D, E, F;
   }
 }
 
-void rotate_quaternion(x,y,i,w)
-float	x, y;
-int	i, w;
+void rotate_quaternion(float x, float y, int i, int w)
 {
 int	j, k;
 float	E, F, R1;
@@ -82,7 +77,6 @@ float	E, F, R1;
     	P[k] = P[k] * R1 - F * E;
   	}
 }
-
 
 void Evaluate_matrix()
 {

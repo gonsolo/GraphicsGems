@@ -17,21 +17,21 @@ typedef struct { int64_t hi, lo, neg;} dblfixpoint;
 extern int fp_error;
 extern  fixpoint fp_max();
 extern  fixpoint fp_min();
-extern  int fp_integer();
-extern  int fp_fraction();
-extern  double fp_fraction_double();
+extern  int fp_integer(fixpoint);
+extern  int fp_fraction(fixpoint);
+extern  double fp_fraction_double(fixpoint);
 
-extern  fixpoint fp_multiply();
-extern  void fp_print();
-extern  fixpoint fp_fix();
+extern  fixpoint fp_multiply(fixpoint, fixpoint);
+extern  void fp_print(fixpoint);
+extern  fixpoint fp_fix(double);
 extern double fp_double(fixpoint x);
 
-extern uint64_t fp_dblnegative();
-extern dblfixpoint fp_dblnegate();
-extern dblfixpoint fp_dblmultiply();
-extern int fp_dbllessthan();
-extern dblfixpoint fp_dbladd();
-extern fixpoint fp_trunc();
+//extern uint64_t fp_dblnegative();
+//extern dblfixpoint fp_dblnegate();
+extern dblfixpoint fp_dblmultiply(fixpoint, fixpoint);
+extern int fp_dbllessthan(dblfixpoint, dblfixpoint);
+extern dblfixpoint fp_dbladd(dblfixpoint, dblfixpoint);
+extern fixpoint fp_trunc(dblfixpoint);
 
 fixpoint fp_floor(fixpoint x);
 fixpoint fp_floor_div(fixpoint x, fixpoint y);

@@ -136,7 +136,7 @@ if (!(x)) fprintf(stderr," Assert failed: x\n");
 typedef int boolean;			/* boolean data type */
 typedef boolean flag;			/* flag data type */
 
-extern double V2SquaredLength(), V2Length();
+extern double V2SquaredLength(Vector2 *), V2Length();
 extern double V2Dot(), V2DistanceBetween2Points(); 
 extern Vector2 *V2Negate(), *V2Normalize(), *V2Scale(), *V2Add(), *V2Sub();
 extern Vector2 *V2Lerp(), *V2Combine(), *V2Mul(), *V2MakePerpendicular();
