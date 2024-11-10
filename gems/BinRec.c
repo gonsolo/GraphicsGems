@@ -22,8 +22,7 @@
  * Also return r = min(n-b, largest power of 2 dividing b)
  */
 
-void inside_out(n, a, b, r)
-int n, a, *b, *r;
+void inside_out(int n, int a, int *b, int *r)
 {
     int k, m;
 

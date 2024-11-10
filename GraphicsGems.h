@@ -136,26 +136,49 @@ if (!(x)) fprintf(stderr," Assert failed: x\n");
 typedef int boolean;			/* boolean data type */
 typedef boolean flag;			/* flag data type */
 
-extern double V2SquaredLength(Vector2 *), V2Length();
-extern double V2Dot(), V2DistanceBetween2Points(); 
-extern Vector2 *V2Negate(), *V2Normalize(), *V2Scale(), *V2Add(), *V2Sub();
-extern Vector2 *V2Lerp(), *V2Combine(), *V2Mul(), *V2MakePerpendicular();
-extern Vector2 *V2New(), *V2Duplicate();
-extern Point2 *V2MulPointByProjMatrix();
-extern Matrix3 *V2MatMul(), *TransposeMatrix3();
+extern double V2SquaredLength(Vector2*), V2Length(Vector2*);
+extern double V2Dot(Vector2*, Vector2*);
+extern double V2DistanceBetween2Points(Point2*, Point2*); 
+extern Vector2 *V2Negate(Vector2*), *V2Normalize(Vector2*), *V2Scale(Vector2*, double);
+extern Vector2 *V2Add(Vector2*, Vector2*, Vector2*), *V2Sub(Vector2*, Vector2*, Vector2*);
+extern Vector2 *V2Lerp(Vector2*, Vector2*, double, Vector2*);
+extern Vector2 *V2Combine(Vector2*, Vector2*, Vector2*, double, double);
+extern Vector2 *V2Mul(Vector2*, Vector2*, Vector2*);
+extern Vector2 *V2MakePerpendicular(Vector2*, Vector2*);
+extern Vector2 *V2New(double, double), *V2Duplicate(Vector2*);
+extern Point2 *V2MulPointByProjMatrix(Point2*, Matrix3*, Point2*);
+extern Matrix3 *V2MatMul(Matrix3*, Matrix3*, Matrix3*);
+extern Matrix3 *TransposeMatrix3(Matrix3*, Matrix3*);
 
-extern double V3SquaredLength(), V3Length();
-extern double V3Dot(), V3DistanceBetween2Points();
-extern Vector3 *V3Normalize(), *V3Scale(), *V3Add(), *V3Sub();
-extern Vector3 *V3Lerp(), *V3Combine(), *V3Mul(), *V3Cross();
-extern Vector3 *V3New(), *V3Duplicate();
-extern Point3 *V3MulPointByMatrix(), *V3MulPointByProjMatrix();
+extern double V3SquaredLength(Vector3*), V3Length(Vector3*);
+extern double V3Dot(Vector3*, Vector3*);
+extern double V3DistanceBetween2Points(Point3*, Point3*);
+extern Vector3 *V3Normalize(Vector3*), *V3Scale(Vector3*, double);
+extern Vector3 *V3Add(Vector3*, Vector3*, Vector3*);
+extern Vector3 *V3Sub(Vector3*, Vector3*, Vector3*);
+extern Vector3 *P3Sub(Point3 *a, Point3 *b, Vector3 *c);
+extern Vector3 *V3Lerp(Vector3*, Vector3*, double, Vector3*);
+extern Vector3 *V3Combine(Vector3*, Vector3*, Vector3*, double, double);
+extern Vector3 *V3Mul(Vector3*, Vector3*, Vector3*);
+extern Vector3 *V3Cross(Vector3*, Vector3*, Vector3*);
+extern Vector3 *V3New(double, double, double);
+extern Vector3 *V3Duplicate(Vector3*);
+extern Point3 *V3MulPointByMatrix(Point3*, Matrix3*, Point3*);
+extern Point3 *V3MulPointByProjMatrix(Point3*, Matrix4*, Point3*);
 extern Point3 *V3MulPointByMatrix4(), *V3MulVectorByMatrix4();
-extern Matrix4 *V3MatMul();
+extern Matrix4 *V3MatMul(Matrix4*, Matrix4*, Matrix4*);
 
-extern double RegulaFalsi(), NewtonRaphson(), findroot();
-
-Vector3 *V3Negate(Vector3* v);
+extern double RegulaFalsi(double (*)(double), double, double);
+extern double NewtonRaphson(
+                double (*)(double),
+                double (*)(double),
+                double);
+extern double findroot(
+                double,
+                double,
+                double,
+                double (*)(double),
+                double (*)(double));
 
 #endif
 

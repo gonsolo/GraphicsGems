@@ -40,8 +40,7 @@ void left( IntPoint2   *I)
     printf("left from %d %d\n", I->x, I->y);
 }
 
-void up(I)
-IntPoint2   *I;
+void up(IntPoint2 *I)
 {
     /* Note: replace printf with code to process upward */
 	/* intersection, if desired */

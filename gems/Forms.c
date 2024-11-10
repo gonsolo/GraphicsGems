@@ -61,12 +61,12 @@ void subarray (int* src, int* dest, int n, int k)		/* strike out kth row/column 
 			*dest++ = *src;
 }
 
-int determinant (A, I, J, n, parity)/* actually gets a sub-determinant */
+int determinant ( /* actually gets a sub-determinant */
 	int     A[N][N],			/* input = entire matrix */
-	I[N],				/* row sub-array we want */
-	J[N],				/* col sub-array we want */
-	parity,				/* 1-> flip polarity */
-	n;				/* # elements in subarrays */
+	int I[N],				/* row sub-array we want */
+	int J[N],				/* col sub-array we want */
+	int n,				/* # elements in subarrays */
+	int parity)				/* 1-> flip polarity */
 
 {
 	int     i,
@@ -95,9 +95,9 @@ int determinant (A, I, J, n, parity)/* actually gets a sub-determinant */
 		det = -det;
 	return (det);
 }
-int adjoint (A, Aadj)			/* returns determinant of A */
-int     A[N][N],			/* input matrix */
-        Aadj[N][N];			/* output = adjoint of A */
+int adjoint (			/* returns determinant of A */
+        int A[N][N],			/* input matrix */
+        int Aadj[N][N])			/* output = adjoint of A */
 {					/* must have N >= 3 */
     int	   i,
             j,
@@ -133,10 +133,10 @@ int     A[N][N],			/* input matrix */
     return (det);
 }
 
-void matmult (A, B, C)				/* C = A*B */
-int     A[N][N],
-        B[N][N],
-        C[N][N];
+void matmult ( /* C = A*B */
+        int A[N][N],
+        int B[N][N],
+        int C[N][N])
 {
     int		i,
 		j,
@@ -154,10 +154,10 @@ int     A[N][N],
     }
 }
 
-void print_mat (string, mat, n)
-char   *string;
-int     mat[N][N],
-         n;
+void print_mat (
+        char *string,
+        int  mat[N][N],
+        int n)
 {
     int     i,
              j;
@@ -169,6 +169,7 @@ int     mat[N][N],
 	printf ("\n");
     }
 }
+
 int main ()
 {
 	int     i,

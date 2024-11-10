@@ -114,8 +114,7 @@ void def_contour(long x[], long y[], int	n, int no, int type)
  *
  *	no	id of contour
  */
-CONTOUR	*get_contour_ptr(no)
-int	no;
+CONTOUR	*get_contour_ptr(int no)
 {
 	CONTOUR	*cp;
 
@@ -140,8 +139,7 @@ int	no;
  *	delete contour(s) from the list with id
  *	no
  */
-void del_contour(no)
-int	no;
+void del_contour(int no)
 {
 	CONTOUR	*cp, *cpp;
 	CONTOUR	*qp = (CONTOUR *)NULL;

@@ -15,7 +15,7 @@
 #include <math.h>
 #include "GraphicsGems.h"
 
-double nicenum();
+double nicenum(double, int);
 
 /* expt(a,n)=a^n for integer n */
 
@@ -73,9 +73,7 @@ void loose_label(double min, double max)
  * Round the number if round=1, take ceiling if round=0
  */
 
-double nicenum(x, round)
-double x;
-int round;
+double nicenum(double x, int round)
 {
     int expv;				/* exponent of x */
     double f;				/* fractional part of x */

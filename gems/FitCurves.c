@@ -17,21 +17,48 @@ from "Graphics Gems", Academic Press, 1990
 typedef Point2 *BezierCurve;
 
 /* Forward declarations */
-void		FitCurve();
-static	void		FitCubic();
-static	double		*Reparameterize();
-static	double		NewtonRaphsonRootFind();
-static	Point2		BezierII();
-static	double 		B0(), B1(), B2(), B3();
-static	Vector2		ComputeLeftTangent();
-static	Vector2		ComputeRightTangent();
-static	Vector2		ComputeCenterTangent();
-static	double		ComputeMaxError();
-static	double		*ChordLengthParameterize();
-static	BezierCurve	GenerateBezier();
-static	Vector2		V2AddII();
-static	Vector2		V2ScaleIII();
-static	Vector2		V2SubII();
+void FitCurve(Point2 *d, int nPts, double error);
+static void FitCubic(
+    Point2	*d,
+    int		first, int last,
+    Vector2	tHat1, Vector2 tHat2,
+    double	error);
+static double *Reparameterize(
+    Point2	*d,
+    int		first, int last,
+    double	*u,
+    BezierCurve	bezCurve);	/*  Current fitted curve	*/
+static double NewtonRaphsonRootFind(
+    BezierCurve	Q,
+    Point2 		P,
+    double 		u);
+static Point2 BezierII(
+    int		degree,
+    Point2 	*V,
+    double 	t);
+static	double 		B0(double), B1(double), B2(double), B3(double);
+static Vector2 ComputeLeftTangent(Point2 *d, int end);
+static Vector2 ComputeRightTangent(Point2 *d, int end);
+static Vector2 ComputeCenterTangent(
+    Point2	*d,
+    int		center);		/*  Index to point inside region	*/
+static double ComputeMaxError(
+    Point2	*d,
+    int		first, int last,
+    BezierCurve	bezCurve,
+    double	*u,
+    int		*splitPoint);
+static double *ChordLengthParameterize(
+    Point2	*d,
+    int		first, int last);
+static BezierCurve  GenerateBezier(
+    Point2	*d,
+    int		first, int last,
+    double	*uPrime,
+    Vector2	tHat1, Vector2 tHat2);
+static	Vector2		V2AddII(Vector2, Vector2);
+static	Vector2		V2ScaleIII(Vector2, double);
+static	Vector2		V2SubII(Vector2, Vector2);
 
 #define MAXPOINTS	1000		/* The most points you can have */
 
@@ -75,10 +102,7 @@ int main()
  *  FitCurve :
  *  	Fit a Bezier curve to a set of digitized points 
  */
-void FitCurve(d, nPts, error)
-    Point2	*d;			/*  Array of digitized points	*/
-    int		nPts;		/*  Number of digitized points	*/
-    double	error;		/*  User-defined error squared	*/
+void FitCurve(Point2 *d, int nPts, double error)
 {
     Vector2	tHat1, tHat2;	/*  Unit tangent vectors at endpoints */
 
@@ -93,11 +117,11 @@ void FitCurve(d, nPts, error)
  *  FitCubic :
  *  	Fit a Bezier curve to a (sub)set of digitized points
  */
-static void FitCubic(d, first, last, tHat1, tHat2, error)
-    Point2	*d;			/*  Array of digitized points */
-    int		first, last;	/* Indices of first and last pts in region */
-    Vector2	tHat1, tHat2;	/* Unit tangent vectors at endpoints */
-    double	error;		/*  User-defined error squared	   */
+static void FitCubic(
+    Point2	*d,			/*  Array of digitized points */
+    int		first, int last,	/* Indices of first and last pts in region */
+    Vector2	tHat1, Vector2 tHat2,	/* Unit tangent vectors at endpoints */
+    double	error)		/*  User-defined error squared	   */
 {
     BezierCurve	bezCurve; /*Control points of fitted Bezier curve*/
     double	*u;		/*  Parameter values for point  */
@@ -177,11 +201,11 @@ static void FitCubic(d, first, last, tHat1, tHat2, error)
  *  Use least-squares method to find Bezier control points for region.
  *
  */
-static BezierCurve  GenerateBezier(d, first, last, uPrime, tHat1, tHat2)
-    Point2	*d;			/*  Array of digitized points	*/
-    int		first, last;		/*  Indices defining region	*/
-    double	*uPrime;		/*  Parameter values for region */
-    Vector2	tHat1, tHat2;	/*  Unit tangents at endpoints	*/
+static BezierCurve  GenerateBezier(
+    Point2	*d,			/*  Array of digitized points	*/
+    int		first, int last,		/*  Indices defining region	*/
+    double	*uPrime,		/*  Parameter values for region */
+    Vector2	tHat1, Vector2 tHat2)	/*  Unit tangents at endpoints	*/
 {
     int 	i;
     Vector2 	A[MAXPOINTS][2];	/* Precomputed rhs for eqn	*/
@@ -285,11 +309,11 @@ static BezierCurve  GenerateBezier(d, first, last, uPrime, tHat1, tHat2)
  *   a better parameterization.
  *
  */
-static double *Reparameterize(d, first, last, u, bezCurve)
-    Point2	*d;			/*  Array of digitized points	*/
-    int		first, last;		/*  Indices defining region	*/
-    double	*u;			/*  Current parameter values	*/
-    BezierCurve	bezCurve;	/*  Current fitted curve	*/
+static double *Reparameterize(
+    Point2	*d,			/*  Array of digitized points	*/
+    int		first, int last,		/*  Indices defining region	*/
+    double	*u,			/*  Current parameter values	*/
+    BezierCurve	bezCurve)	/*  Current fitted curve	*/
 {
     int 	nPts = last-first+1;	
     int 	i;
@@ -309,10 +333,10 @@ static double *Reparameterize(d, first, last, u, bezCurve)
  *  NewtonRaphsonRootFind :
  *	Use Newton-Raphson iteration to find better root.
  */
-static double NewtonRaphsonRootFind(Q, P, u)
-    BezierCurve	Q;			/*  Current fitted curve	*/
-    Point2 		P;		/*  Digitized point		*/
-    double 		u;		/*  Parameter value for "P"	*/
+static double NewtonRaphsonRootFind(
+    BezierCurve	Q,			/*  Current fitted curve	*/
+    Point2 		P,		/*  Digitized point		*/
+    double 		u)		/*  Parameter value for "P"	*/
 {
     double 		numerator, denominator;
     Point2 		Q1[3], Q2[2];	/*  Q' and Q''			*/
@@ -357,10 +381,10 @@ static double NewtonRaphsonRootFind(Q, P, u)
  *  	Evaluate a Bezier curve at a particular parameter value
  * 
  */
-static Point2 BezierII(degree, V, t)
-    int		degree;		/* The degree of the bezier curve	*/
-    Point2 	*V;		/* Array of control points		*/
-    double 	t;		/* Parametric value to find point for	*/
+static Point2 BezierII(
+    int		degree,		/* The degree of the bezier curve	*/
+    Point2 	*V,		/* Array of control points		*/
+    double 	t)		/* Parametric value to find point for	*/
 {
     int 	i, j;		
     Point2 	Q;	        /* Point on curve at parameter t	*/
@@ -391,30 +415,26 @@ static Point2 BezierII(degree, V, t)
  *  B0, B1, B2, B3 :
  *	Bezier multipliers
  */
-static double B0(u)
-    double	u;
+static double B0(double u)
 {
     double tmp = 1.0 - u;
     return (tmp * tmp * tmp);
 }
 
 
-static double B1(u)
-    double	u;
+static double B1(double u)
 {
     double tmp = 1.0 - u;
     return (3 * u * (tmp * tmp));
 }
 
-static double B2(u)
-    double	u;
+static double B2(double u)
 {
     double tmp = 1.0 - u;
     return (3 * u * u * tmp);
 }
 
-static double B3(u)
-    double	u;
+static double B3(double u)
 {
     return (u * u * u);
 }
@@ -425,9 +445,7 @@ static double B3(u)
  * ComputeLeftTangent, ComputeRightTangent, ComputeCenterTangent :
  *Approximate unit tangents at endpoints and "center" of digitized curve
  */
-static Vector2 ComputeLeftTangent(d, end)
-    Point2	*d;			/*  Digitized points*/
-    int		end;		/*  Index to "left" end of region */
+static Vector2 ComputeLeftTangent(Point2 *d, int end)
 {
     Vector2	tHat1;
     tHat1 = V2SubII(d[end+1], d[end]);
@@ -435,9 +453,7 @@ static Vector2 ComputeLeftTangent(d, end)
     return tHat1;
 }
 
-static Vector2 ComputeRightTangent(d, end)
-    Point2	*d;			/*  Digitized points		*/
-    int		end;		/*  Index to "right" end of region */
+static Vector2 ComputeRightTangent(Point2 *d, int end)
 {
     Vector2	tHat2;
     tHat2 = V2SubII(d[end-1], d[end]);
@@ -446,9 +462,9 @@ static Vector2 ComputeRightTangent(d, end)
 }
 
 
-static Vector2 ComputeCenterTangent(d, center)
-    Point2	*d;			/*  Digitized points			*/
-    int		center;		/*  Index to point inside region	*/
+static Vector2 ComputeCenterTangent(
+    Point2	*d,			/*  Digitized points			*/
+    int		center)		/*  Index to point inside region	*/
 {
     Vector2	V1, V2, tHatCenter;
 
@@ -466,9 +482,9 @@ static Vector2 ComputeCenterTangent(d, center)
  *	Assign parameter values to digitized points 
  *	using relative distances between points.
  */
-static double *ChordLengthParameterize(d, first, last)
-    Point2	*d;			/* Array of digitized points */
-    int		first, last;		/*  Indices defining region	*/
+static double *ChordLengthParameterize(
+    Point2	*d,			/* Array of digitized points */
+    int		first, int last)		/*  Indices defining region	*/
 {
     int		i;	
     double	*u;			/*  Parameterization		*/
@@ -496,12 +512,12 @@ static double *ChordLengthParameterize(d, first, last)
  *	Find the maximum squared distance of digitized points
  *	to fitted curve.
 */
-static double ComputeMaxError(d, first, last, bezCurve, u, splitPoint)
-    Point2	*d;			/*  Array of digitized points	*/
-    int		first, last;		/*  Indices defining region	*/
-    BezierCurve	bezCurve;		/*  Fitted Bezier curve		*/
-    double	*u;			/*  Parameterization of points	*/
-    int		*splitPoint;		/*  Point of maximum error	*/
+static double ComputeMaxError(
+    Point2	*d,			/*  Array of digitized points	*/
+    int		first, int last,		/*  Indices defining region	*/
+    BezierCurve	bezCurve,		/*  Fitted Bezier curve		*/
+    double	*u,			/*  Parameterization of points	*/
+    int		*splitPoint)		/*  Point of maximum error	*/
 {
     int		i;
     double	maxDist;		/*  Maximum error		*/
@@ -522,24 +538,20 @@ static double ComputeMaxError(d, first, last, bezCurve, u, splitPoint)
     }
     return (maxDist);
 }
-static Vector2 V2AddII(a, b)
-    Vector2 a, b;
+static Vector2 V2AddII(Vector2 a, Vector2 b)
 {
     Vector2	c;
     c.x = a.x + b.x;  c.y = a.y + b.y;
     return (c);
 }
-static Vector2 V2ScaleIII(v, s)
-    Vector2	v;
-    double	s;
+static Vector2 V2ScaleIII(Vector2 v, double s)
 {
     Vector2 result;
     result.x = v.x * s; result.y = v.y * s;
     return (result);
 }
 
-static Vector2 V2SubII(a, b)
-    Vector2	a, b;
+static Vector2 V2SubII(Vector2 a, Vector2 b)
 {
     Vector2	c;
     c.x = a.x - b.x; c.y = a.y - b.y;

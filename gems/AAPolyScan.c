@@ -54,16 +54,16 @@ int	xLmin, xLmax;		/* subpixel x extremes for scanline */
 int	xRmax, xRmin;		/* (for optimization shortcut) */
 
 /* Compute sub-pixel x coordinate for vertex */
-extern int screenX(/* Vertex *v */);
+extern int screenX(Vertex *v);
 
 /* Interpolate vertex information */
-extern void vLerp(/* double alpha, Vertex *Va, *Vb, *Vout */);
+extern void vLerp(double alpha, Vertex *Va, Vertex *Vb, Vertex *Vout);
 
 /* Render polygon for one pixel, given coverage area */
 /*  and bitmask */
-extern void renderPixel(/* int x, y, Vertex *V,
+extern void renderPixel(int x, int y, Vertex *V,
                         int area, unsigned mask[],
-                        Surface *object */);
+                        Surface *object);
 void renderScanline(Vertex* Vl, Vertex* Vr, int y, Surface* object);
 void computePixelMask(int x, unsigned mask[]);
 int Coverage(int x);
@@ -71,128 +71,122 @@ int Coverage(int x);
 /*
 * Render shaded polygon
 */
-void drawPolygon(polygon, numVertex, object)
-Vertex	polygon[];		/*clockwise clipped vertex list */
-int	numVertex;			/*number of vertices in polygon */
-
-Surface *object;			/* shading parms for this object */
+void drawPolygon(Vertex polygon[], int numVertex, Surface *object)
 {
-    Vertex *endPoly;			/* end of polygon vertex list */
-    Vertex VscanLeft, VscanRight;	/* interpolated vertices */ 								/* at scanline */
-    double aLeft, aRight;			/* interpolation ratios */
-    struct SubPixel *sp_ptr;		/* current subpixel info */
-    int xLeft, xNextLeft;			/* subpixel coordinates for */
-    int  xRight, xNextRight;		/* active polygon edges */
-    int i, y, minY;
+        Vertex *endPoly;			/* end of polygon vertex list */
+        Vertex VscanLeft, VscanRight;	/* interpolated vertices */ 								/* at scanline */
+        double aLeft, aRight;			/* interpolation ratios */
+        struct SubPixel *sp_ptr;		/* current subpixel info */
+        int xLeft, xNextLeft;			/* subpixel coordinates for */
+        int  xRight, xNextRight;		/* active polygon edges */
+        int i, y, minY;
 
-    /* find vertex with minimum y (display coordinate) */
-    Vleft = polygon;
-    for (i = 1; i<numVertex; i++)
-    if (polygon[i].y < Vleft->y)
-        Vleft = &polygon[i];
-    endPoly = &polygon[numVertex - 1];
-    minY = Vleft->y;
+        /* find vertex with minimum y (display coordinate) */
+        Vleft = polygon;
+        for (i = 1; i<numVertex; i++)
+                if (polygon[i].y < Vleft->y)
+                        Vleft = &polygon[i];
+        endPoly = &polygon[numVertex - 1];
+        minY = Vleft->y;
 
-    /* initialize scanning edges */
-    Vright = VnextRight = VnextLeft = Vleft;
+        /* initialize scanning edges */
+        Vright = VnextRight = VnextLeft = Vleft;
 
-    /* prepare bottom of initial scanline - no coverage by polygon */
-    for (i = 0; i<SUBYRES; i++)
-        sp[i].xLeft = sp[i].xRight = -1;
-    xLmin = xRmin = MAX_X;
-    xLmax = xRmax = -1;
-    
-    /* scan convert for each subpixel from bottom to top */
-    for (y = Vleft->y;; y++)	{
+        /* prepare bottom of initial scanline - no coverage by polygon */
+        for (i = 0; i<SUBYRES; i++)
+                sp[i].xLeft = sp[i].xRight = -1;
+        xLmin = xRmin = MAX_X;
+        xLmax = xRmax = -1;
 
-        while (y == VnextLeft->y)	{	/* reached next left vertex */
-            VnextLeft = (Vleft = VnextLeft) + 1; 	/* advance */
-            if (VnextLeft > endPoly)			/* (wraparound) */
-                VnextLeft = polygon;
-            if (VnextLeft == Vright) {
-                if (y == minY) /* all y's same? */
-                    return; /* (null polygon) */
-                break;
-            }
-            xLeft = screenX(Vleft);
-            xNextLeft = screenX(VnextLeft);
+        /* scan convert for each subpixel from bottom to top */
+        for (y = Vleft->y;; y++)	{
+
+                while (y == VnextLeft->y)	{	/* reached next left vertex */
+                        VnextLeft = (Vleft = VnextLeft) + 1; 	/* advance */
+                        if (VnextLeft > endPoly)			/* (wraparound) */
+                                VnextLeft = polygon;
+                        if (VnextLeft == Vright) {
+                                if (y == minY) /* all y's same? */
+                                        return; /* (null polygon) */
+                                break;
+                        }
+                        xLeft = screenX(Vleft);
+                        xNextLeft = screenX(VnextLeft);
+                }
+
+                while (y == VnextRight->y)  { /*reached next right vertex */
+                        VnextRight = (Vright = VnextRight) - 1;
+                        if (VnextRight < polygon)			/* (wraparound) */
+                                VnextRight = endPoly;
+                        xRight = screenX(Vright);
+                        xNextRight = screenX(VnextRight);
+                }
+
+                if (y>VnextLeft->y || y>VnextRight->y)	{
+                        /* done, mark uncovered part of last scanline */
+                        for (; MODRES(y); y++)
+                                sp[MODRES(y)].xLeft = sp[MODRES(y)].xRight = -1;
+                        renderScanline(Vleft, Vright, y / SUBYRES - 1, object);
+                        return;
+                }
+
+                /*
+                 * Interpolate sub-pixel x endpoints at this y,
+                 * and update extremes for pixel coherence optimization
+                 */
+
+                sp_ptr = &sp[MODRES(y)];
+                aLeft = (double)(y - Vleft->y) / (VnextLeft->y - Vleft->y);
+                sp_ptr->xLeft = (int)LERP(aLeft, xLeft, xNextLeft);
+                if (sp_ptr->xLeft < xLmin)
+                        xLmin = sp_ptr->xLeft;
+                if (sp_ptr->xLeft > xLmax)
+                        xLmax = sp_ptr->xLeft;
+
+                aRight = (double)(y - Vright->y) / (VnextRight->y
+                                - Vright->y);
+                sp_ptr->xRight = (int)LERP(aRight, xRight, xNextRight);
+                if (sp_ptr->xRight < xRmin)
+                        xRmin = sp_ptr->xRight;
+                if (sp_ptr->xRight > xRmax)
+                        xRmax = sp_ptr->xRight;
+
+                if (MODRES(y) == SUBYRES - 1)	{	/* end of scanline */
+                        /* interpolate edges to this scanline */
+                        vLerp(aLeft, Vleft, VnextLeft, &VscanLeft);
+                        vLerp(aRight, Vright, VnextRight, &VscanRight);
+                        renderScanline(&VscanLeft, &VscanRight, y / SUBYRES, object);
+                        xLmin = xRmin = MAX_X; 		/* reset extremes */
+                        xLmax = xRmax = -1;
+                }
         }
-
-        while (y == VnextRight->y)  { /*reached next right vertex */
-            VnextRight = (Vright = VnextRight) - 1;
-            if (VnextRight < polygon)			/* (wraparound) */
-                VnextRight = endPoly;
-            xRight = screenX(Vright);
-            xNextRight = screenX(VnextRight);
-        }
-
-        if (y>VnextLeft->y || y>VnextRight->y)	{
-            /* done, mark uncovered part of last scanline */
-            for (; MODRES(y); y++)
-                sp[MODRES(y)].xLeft = sp[MODRES(y)].xRight = -1;
-            renderScanline(Vleft, Vright, y / SUBYRES - 1, object);
-            return;
-        }
-
-        /*
-        * Interpolate sub-pixel x endpoints at this y,
-        * and update extremes for pixel coherence optimization
-        */
-
-        sp_ptr = &sp[MODRES(y)];
-        aLeft = (double)(y - Vleft->y) / (VnextLeft->y - Vleft->y);
-        sp_ptr->xLeft = (int)LERP(aLeft, xLeft, xNextLeft);
-        if (sp_ptr->xLeft < xLmin)
-            xLmin = sp_ptr->xLeft;
-        if (sp_ptr->xLeft > xLmax)
-            xLmax = sp_ptr->xLeft;
-
-        aRight = (double)(y - Vright->y) / (VnextRight->y
-            - Vright->y);
-        sp_ptr->xRight = (int)LERP(aRight, xRight, xNextRight);
-        if (sp_ptr->xRight < xRmin)
-            xRmin = sp_ptr->xRight;
-        if (sp_ptr->xRight > xRmax)
-            xRmax = sp_ptr->xRight;
-
-        if (MODRES(y) == SUBYRES - 1)	{	/* end of scanline */
-            /* interpolate edges to this scanline */
-            vLerp(aLeft, Vleft, VnextLeft, &VscanLeft);
-            vLerp(aRight, Vright, VnextRight, &VscanRight);
-            renderScanline(&VscanLeft, &VscanRight, y / SUBYRES, object);
-            xLmin = xRmin = MAX_X; 		/* reset extremes */
-            xLmax = xRmax = -1;
-        }
-    }
 }
 
 /*
 * Render one scanline of polygon
 */
 
-void renderScanline(Vl, Vr, y, object)
-Vertex *Vl, *Vr; 	/* polygon vertices interpolated */
-/* at scanline */
-int y;			/* scanline coordinate */
-Surface *object;	/* shading parms for this object */
+void renderScanline(Vertex *Vl, Vertex *Vr, int y, Surface *object)
+        /* Vertex *Vl, *Vr;     polygon vertices interpolated at scanline */
+        /* int y;		scanline coordinate */
+        /* Surface *object;	shading parms for this object */
 {
-    Vertex Vpixel;	/*object info interpolated at one pixel */
-    unsigned mask[SUBYRES];	/*pixel coverage bitmask */
-    int x;			/* leftmost subpixel of current pixel */
+        Vertex Vpixel;	/*object info interpolated at one pixel */
+        unsigned mask[SUBYRES];	/*pixel coverage bitmask */
+        int x;			/* leftmost subpixel of current pixel */
 
-    for (x = (int)(SUBXRES*floor((double)(xLmin / SUBXRES))); x <= xRmax; x += SUBXRES) {
-        vLerp((double)(x - xLmin) / (xRmax - xLmin), Vl, Vr, &Vpixel);
-        computePixelMask(x, mask);
-        renderPixel(x / SUBXRES, y, &Vpixel,
-            /*computePixel*/Coverage(x), mask, object);
-    }
+        for (x = (int)(SUBXRES*floor((double)(xLmin / SUBXRES))); x <= xRmax; x += SUBXRES) {
+                vLerp((double)(x - xLmin) / (xRmax - xLmin), Vl, Vr, &Vpixel);
+                computePixelMask(x, mask);
+                renderPixel(x / SUBXRES, y, &Vpixel,
+                                /*computePixel*/Coverage(x), mask, object);
+        }
 }
 
 /*
 * Compute number of subpixels covered by polygon at current pixel
 */
-int Coverage(x)
-int x;			/* left subpixel of pixel */
+int Coverage(int x)
 {
     int  area;			/* total covered area */
     int partialArea;	  /* covered area for current subpixel y */
@@ -218,9 +212,7 @@ int x;			/* left subpixel of pixel */
 * polygon at current pixel. (Not all hidden-surface methods
 * need this mask. )
 */
-void computePixelMask(x, mask)
-int x;			/* left subpixel of pixel */
-unsigned mask[];	/* output bitmask */
+void computePixelMask(int x, unsigned mask[])
 {
     static unsigned leftMaskTable[] =
     { 0xFFFF, 0x7FFF, 0x3FFF, 0x1FFF, 0x0FFF, 0x07FF, 0x03FF,

@@ -32,9 +32,7 @@ from "Graphics Gems", Academic Press, 1990
 
 /*  	M4RotateX - Post-concatenate a x-axis rotation matrix.  */
 
-Matrix4	*M4RotateX	(m,a)
-		Matrix4	*m;			/* Current transformation matrix*/
-		double	a;			/* Rotation angle		*/
+Matrix4	*M4RotateX(Matrix4 *m, double a)
 {
 		double	c, s;
 		double	t;
@@ -54,9 +52,7 @@ Matrix4	*M4RotateX	(m,a)
 
 /* 	M4RotateY - Post-concatenate a y-axis rotation matrix.  */
 
-Matrix4		*M4RotateY	(m,a)
-		Matrix4	*m;			/* Current transformation matrix*/
-		double	a;			/* Rotation angle		*/
+Matrix4 *M4RotateY(Matrix4 *m, double a)
 {
 		double	c, s;
 		double	t;
@@ -75,9 +71,7 @@ Matrix4		*M4RotateY	(m,a)
 
 /*   	M4RotateZ - Post-concatenate a z-axis rotation matrix.   */
 
-Matrix4	*M4RotateZ	(m,a)
-		Matrix4	*m;			/* Current transformation matrix*/
-		double	a;			/* Rotation angle		*/
+Matrix4	*M4RotateZ(Matrix4 *m, double a)
 {
 		double	c, s;
 		double	t;
@@ -97,9 +91,9 @@ Matrix4	*M4RotateZ	(m,a)
 
 /*   	M4Scale	- Post-concatenate a scaling.   */
 
-Matrix4	*M4Scale	(m,sx,sy,sz)
-		Matrix4	*m;			/* Current transformation matrix */
-		double	sx, sy, sz;	/* Scale factors about x,y,z */
+Matrix4	*M4Scale(
+        Matrix4 *m,                             /* Current transformation matrix */
+        double sx, double sy, double sz)        /* Scale factors about x,y,z */
 {
 		int		i;
 
@@ -114,9 +108,9 @@ Matrix4	*M4Scale	(m,sx,sy,sz)
 
 /*   	M4Translate - Post-concatenate a translation.   */
 
-Matrix4	*M4Translate	(m,tx,ty,tz)
-		Matrix4	*m;			/* Current transformation matrix */
-		double	tx, ty, tz;	/* Translation distance */
+Matrix4	*M4Translate(
+        Matrix4 *m,                             /* Current transformation matrix */
+        double tx, double ty, double tz)        /* Translation distance */
 {
 		int		i;
 
@@ -134,9 +128,9 @@ Matrix4	*M4Translate	(m,tx,ty,tz)
 		/* Perspective is along the z-axis with the eye at +z.   */
 
  
-Matrix4	*M4ZPerspective	(m,d)
-		Matrix4	*m;			/* Current transformation matrix  */
-		double	d;			/* Perspective distance		*/
+Matrix4	*M4ZPerspective(
+        Matrix4 *m,     /* Current transformation matrix  */
+        double d)       /* Perspective distance		*/
 {
 		int		i;
 		double	f = 1. / d;

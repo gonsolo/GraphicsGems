@@ -8,12 +8,12 @@ from "Graphics Gems", Academic Press, 1990
 /* Transforms a 3D axis-aligned box via a 3x3 matrix and a translation
  * vector and returns an axis-aligned box enclosing the result. */ 
 
-void Transform_Box( M, T, A, B )
-Matrix3  M;  	/* Transform matrix.             */
-Vector3  T;  	/* Translation matrix.           */
-Box3     A;  	/* The original bounding box.    */
-Box3    *B;  	/* The transformed bounding box. */
-    {
+void Transform_Box(
+        Matrix3  M,  	/* Transform matrix.             */
+        Vector3  T,  	/* Translation matrix.           */
+        Box3     A,  	/* The original bounding box.    */
+        Box3    *B)  	/* The transformed bounding box. */
+{
     float  a, b;
     float  Amin[3], Amax[3];
     float  Bmin[3], Bmax[3];

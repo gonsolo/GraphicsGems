@@ -75,7 +75,7 @@ struct	contour {			/* holds a contour	*/
 
 extern	CONTOUR	*CL;
 
-CONTOUR	*get_contour_ptr();
+CONTOUR	*get_contour_ptr(int);
 
 extern	short	C_COUNT;
  

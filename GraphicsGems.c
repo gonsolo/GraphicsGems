@@ -14,145 +14,126 @@ from "Graphics Gems", Academic Press, 1990
 /******************/
 
 /* returns squared length of input vector */    
-double V2SquaredLength(a) 
-Vector2 *a;
-{       return((a->x * a->x)+(a->y * a->y));
-        }
+double V2SquaredLength(Vector2 *a) 
+{
+        return (a->x * a->x)+(a->y * a->y);
+}
         
 /* returns length of input vector */
-double V2Length(a) 
-Vector2 *a;
+double V2Length(Vector2 *a) 
 {
-        return(sqrt(V2SquaredLength(a)));
-        }
+        return sqrt(V2SquaredLength(a));
+}
         
 /* negates the input vector and returns it */
-Vector2 *V2Negate(v) 
-Vector2 *v;
+Vector2 *V2Negate(Vector2 *v) 
 {
         v->x = -v->x;  v->y = -v->y;
-        return(v);
-        }
+        return v;
+}
 
 /* normalizes the input vector and returns it */
-Vector2 *V2Normalize(v) 
-Vector2 *v;
+Vector2 *V2Normalize(Vector2 *v) 
 {
-double len = V2Length(v);
+        double len = V2Length(v);
         if (len != 0.0) { v->x /= len;  v->y /= len; }
-        return(v);
-        }
+        return v;
+}
 
 
 /* scales the input vector to the new length and returns it */
-Vector2 *V2Scale(v, newlen) 
-Vector2 *v;
-double newlen;
+Vector2 *V2Scale(Vector2 *v, double newlen) 
 {
-double len = V2Length(v);
+        double len = V2Length(v);
         if (len != 0.0) { v->x *= newlen/len;   v->y *= newlen/len; }
-        return(v);
-        }
+        return v;
+}
 
 /* return vector sum c = a+b */
-Vector2 *V2Add(a, b, c)
-Vector2 *a, *b, *c;
+Vector2 *V2Add(Vector2 *a, Vector2 *b, Vector2 *c)
 {
-        c->x = a->x+b->x;  c->y = a->y+b->y;
-        return(c);
-        }
+        c->x = a->x+b->x;
+        c->y = a->y+b->y;
+        return c;
+}
         
 /* return vector difference c = a-b */
-Vector2 *V2Sub(a, b, c)
-Vector2 *a, *b, *c;
+Vector2 *V2Sub(Vector2 *a, Vector2 *b, Vector2 *c)
 {
         c->x = a->x-b->x;  c->y = a->y-b->y;
-        return(c);
-        }
+        return c;
+}
 
 /* return the dot product of vectors a and b */
-double V2Dot(a, b) 
-Vector2 *a, *b; 
+double V2Dot(Vector2 *a, Vector2 *b) 
 {
-        return((a->x*b->x)+(a->y*b->y));
-        }
+        return (a->x*b->x)+(a->y*b->y);
+}
 
 /* linearly interpolate between vectors by an amount alpha */
 /* and return the resulting vector. */
 /* When alpha=0, result=lo.  When alpha=1, result=hi. */
-Vector2 *V2Lerp(lo, hi, alpha, result) 
-Vector2 *lo, *hi, *result; 
-double alpha;
+Vector2 *V2Lerp(Vector2 *lo, Vector2 *hi, double alpha, Vector2* result) 
 {
         result->x = LERP(alpha, lo->x, hi->x);
         result->y = LERP(alpha, lo->y, hi->y);
-        return(result);
-        }
-
+        return result;
+}
 
 /* make a linear combination of two vectors and return the result. */
 /* result = (a * ascl) + (b * bscl) */
-Vector2 *V2Combine (a, b, result, ascl, bscl) 
-Vector2 *a, *b, *result;
-double ascl, bscl;
+Vector2 *V2Combine (Vector2 *a, Vector2 *b, Vector2 *result, double ascl, double bscl) 
 {
         result->x = (ascl * a->x) + (bscl * b->x);
         result->y = (ascl * a->y) + (bscl * b->y);
-        return(result);
-        }
+        return result;
+}
 
 /* multiply two vectors together component-wise */
-Vector2 *V2Mul (a, b, result) 
-Vector2 *a, *b, *result;
+Vector2 *V2Mul (Vector2 *a, Vector2 *b, Vector2 *result) 
 {
         result->x = a->x * b->x;
         result->y = a->y * b->y;
-        return(result);
-        }
+        return result;
+}
 
 /* return the distance between two points */
-double V2DistanceBetween2Points(a, b)
-Point2 *a, *b;
+double V2DistanceBetween2Points(Point2 *a, Point2 *b)
 {
-double dx = a->x - b->x;
-double dy = a->y - b->y;
-        return(sqrt((dx*dx)+(dy*dy)));
-        }
+        double dx = a->x - b->x;
+        double dy = a->y - b->y;
+        return sqrt((dx*dx)+(dy*dy));
+}
 
 /* return the vector perpendicular to the input vector a */
-Vector2 *V2MakePerpendicular(a, ap)
-Vector2 *a, *ap;
+Vector2 *V2MakePerpendicular(Vector2 *a, Vector2 *ap)
 {
         ap->x = -a->y;
         ap->y = a->x;
-        return(ap);
-        }
+        return ap;
+}
 
 /* create, initialize, and return a new vector */
-Vector2 *V2New(x, y)
-double x, y;
+Vector2 *V2New(double x, double y)
 {
-Vector2 *v = NEWTYPE(Vector2);
+        Vector2 *v = NEWTYPE(Vector2);
         v->x = x;  v->y = y; 
-        return(v);
-        }
+        return v;
+}
         
 
 /* create, initialize, and return a duplicate vector */
-Vector2 *V2Duplicate(a)
-Vector2 *a;
+Vector2 *V2Duplicate(Vector2 *a)
 {
-Vector2 *v = NEWTYPE(Vector2);
+        Vector2 *v = NEWTYPE(Vector2);
         v->x = a->x;  v->y = a->y; 
-        return(v);
-        }
+        return v;
+}
         
 /* multiply a point by a projective matrix and return the transformed point */
-Point2 *V2MulPointByProjMatrix(pin, m, pout)
-Point2 *pin, *pout;
-Matrix3 *m;
+Point2 *V2MulPointByProjMatrix(Point2 *pin, Matrix3 *m, Point2 *pout)
 {
-double w;
+        double w;
         pout->x = (pin->x * m->element[0][0]) + 
              (pin->y * m->element[1][0]) + m->element[2][0];
         pout->y = (pin->x * m->element[0][1]) + 
@@ -160,38 +141,34 @@ double w;
         w    = (pin->x * m->element[0][2]) + 
              (pin->y * m->element[1][2]) + m->element[2][2];
         if (w != 0.0) { pout->x /= w;  pout->y /= w; }
-        return(pout);
-        }
+        return pout;
+}
 
 /* multiply together matrices c = ab */
 /* note that c must not point to either of the input matrices */
-Matrix3 *V2MatMul(a, b, c)
-Matrix3 *a, *b, *c;
+Matrix3 *V2MatMul(Matrix3 *a, Matrix3 *b, Matrix3 *c)
 {
-int i, j, k;
+        int i, j, k;
         for (i=0; i<3; i++) {
                 for (j=0; j<3; j++) {
                         c->element[i][j] = 0;
-                for (k=0; k<3; k++) c->element[i][j] += 
+                        for (k=0; k<3; k++) c->element[i][j] += 
                                 a->element[i][k] * b->element[k][j];
-                        }
                 }
-        return(c);
         }
+        return c;
+}
 
 /* transpose matrix a, return b */
-Matrix3 *TransposeMatrix3(a, b)
-Matrix3 *a, *b;
+Matrix3 *TransposeMatrix3(Matrix3 *a, Matrix3 *b)
 {
-int i, j;
+        int i, j;
         for (i=0; i<3; i++) {
                 for (j=0; j<3; j++)
                         b->element[i][j] = a->element[j][i];
-                }
-        return(b);
         }
-
-
+        return b;
+}
 
 
 /******************/
@@ -199,18 +176,16 @@ int i, j;
 /******************/
         
 /* returns squared length of input vector */    
-double V3SquaredLength(a) 
-Vector3 *a;
+double V3SquaredLength(Vector3 *a) 
 {
-        return((a->x * a->x)+(a->y * a->y)+(a->z * a->z));
-        }
+        return (a->x * a->x)+(a->y * a->y)+(a->z * a->z);
+}
 
 /* returns length of input vector */
-double V3Length(a) 
-Vector3 *a;
+double V3Length(Vector3 *a) 
 {
-        return(sqrt(V3SquaredLength(a)));
-        }
+        return sqrt(V3SquaredLength(a));
+}
 
 /* negates the input vector and returns it */
 Vector3 *V3Negate(Vector3* v) 
@@ -220,172 +195,155 @@ Vector3 *V3Negate(Vector3* v)
 }
 
 /* normalizes the input vector and returns it */
-Vector3 *V3Normalize(v) 
-Vector3 *v;
+Vector3 *V3Normalize(Vector3 *v) 
 {
-double len = V3Length(v);
+        double len = V3Length(v);
         if (len != 0.0) { v->x /= len;  v->y /= len; v->z /= len; }
-        return(v);
-        }
+        return v;
+}
 
 /* scales the input vector to the new length and returns it */
-Vector3 *V3Scale(v, newlen) 
-Vector3 *v;
-double newlen;
+Vector3 *V3Scale(Vector3 *v, double newlen) 
 {
-double len = V3Length(v);
+        double len = V3Length(v);
         if (len != 0.0) {
-        v->x *= newlen/len;   v->y *= newlen/len;  v->z *= newlen/len;
+                v->x *= newlen/len;   v->y *= newlen/len;  v->z *= newlen/len;
         }
-        return(v);
-        }
-
+        return v;
+}
 
 /* return vector sum c = a+b */
-Vector3 *V3Add(a, b, c)
-Vector3 *a, *b, *c;
+Vector3 *V3Add(Vector3 *a, Vector3 *b, Vector3 *c)
 {
         c->x = a->x+b->x;  c->y = a->y+b->y;  c->z = a->z+b->z;
-        return(c);
-        }
-        
+        return c;
+}
+
 /* return vector difference c = a-b */
-Vector3 *V3Sub(a, b, c)
-Vector3 *a, *b, *c;
+Vector3 *V3Sub(Vector3 *a, Vector3 *b, Vector3 *c)
 {
         c->x = a->x-b->x;  c->y = a->y-b->y;  c->z = a->z-b->z;
-        return(c);
-        }
+        return c;
+}
+
+Vector3 *P3Sub(Point3 *a, Point3 *b, Vector3 *c)
+{
+        c->x = a->x-b->x;  c->y = a->y-b->y;  c->z = a->z-b->z;
+        return c;
+}
 
 /* return the dot product of vectors a and b */
-double V3Dot(a, b) 
-Vector3 *a, *b; 
+double V3Dot(Vector3* a, Vector3* b) 
 {
-        return((a->x*b->x)+(a->y*b->y)+(a->z*b->z));
-        }
+        return (a->x*b->x)+(a->y*b->y)+(a->z*b->z);
+}
 
 /* linearly interpolate between vectors by an amount alpha */
 /* and return the resulting vector. */
 /* When alpha=0, result=lo.  When alpha=1, result=hi. */
-Vector3 *V3Lerp(lo, hi, alpha, result) 
-Vector3 *lo, *hi, *result; 
-double alpha;
+Vector3 *V3Lerp(Vector3* lo, Vector3* hi, double alpha, Vector3* result) 
 {
         result->x = LERP(alpha, lo->x, hi->x);
         result->y = LERP(alpha, lo->y, hi->y);
         result->z = LERP(alpha, lo->z, hi->z);
-        return(result);
-        }
+        return result;
+}
 
 /* make a linear combination of two vectors and return the result. */
 /* result = (a * ascl) + (b * bscl) */
-Vector3 *V3Combine (a, b, result, ascl, bscl) 
-Vector3 *a, *b, *result;
-double ascl, bscl;
+Vector3 *V3Combine(Vector3* a, Vector3* b, Vector3* result, double ascl, double bscl) 
 {
         result->x = (ascl * a->x) + (bscl * b->x);
         result->y = (ascl * a->y) + (bscl * b->y);
         result->z = (ascl * a->z) + (bscl * b->z);
-        return(result);
-        }
-
+        return result;
+}
 
 /* multiply two vectors together component-wise and return the result */
-Vector3 *V3Mul (a, b, result) 
-Vector3 *a, *b, *result;
+Vector3 *V3Mul(Vector3 *a, Vector3 *b, Vector3 *result) 
 {
         result->x = a->x * b->x;
         result->y = a->y * b->y;
         result->z = a->z * b->z;
-        return(result);
-        }
+        return result;
+}
 
 /* return the distance between two points */
-double V3DistanceBetween2Points(a, b)
-Point3 *a, *b;
+double V3DistanceBetween2Points(Point3 *a, Point3 *b)
 {
-double dx = a->x - b->x;
-double dy = a->y - b->y;
-double dz = a->z - b->z;
-        return(sqrt((dx*dx)+(dy*dy)+(dz*dz)));
-        }
+        double dx = a->x - b->x;
+        double dy = a->y - b->y;
+        double dz = a->z - b->z;
+        return sqrt((dx*dx)+(dy*dy)+(dz*dz));
+}
 
 /* return the cross product c = a cross b */
-Vector3 *V3Cross(a, b, c)
-Vector3 *a, *b, *c;
+Vector3 *V3Cross(Vector3 *a, Vector3 *b, Vector3 *c)
 {
         c->x = (a->y*b->z) - (a->z*b->y);
         c->y = (a->z*b->x) - (a->x*b->z);
         c->z = (a->x*b->y) - (a->y*b->x);
-        return(c);
-        }
+        return c;
+}
 
 /* create, initialize, and return a new vector */
-Vector3 *V3New(x, y, z)
-double x, y, z;
+Vector3 *V3New(double x, double y, double z)
 {
-Vector3 *v = NEWTYPE(Vector3);
+        Vector3 *v = NEWTYPE(Vector3);
         v->x = x;  v->y = y;  v->z = z;
-        return(v);
-        }
+        return v;
+}
 
 /* create, initialize, and return a duplicate vector */
-Vector3 *V3Duplicate(a)
-Vector3 *a;
+Vector3 *V3Duplicate(Vector3 *a)
 {
-Vector3 *v = NEWTYPE(Vector3);
+        Vector3 *v = NEWTYPE(Vector3);
         v->x = a->x;  v->y = a->y;  v->z = a->z;
-        return(v);
-        }
+        return v;
+}
 
-        
 /* multiply a point by a matrix and return the transformed point */
-Point3 *V3MulPointByMatrix(pin, m, pout)
-Point3 *pin, *pout;
-Matrix3 *m;
+Point3 *V3MulPointByMatrix(Point3 *pin, Matrix3 *m, Point3 *pout)
 {
         pout->x = (pin->x * m->element[0][0]) + (pin->y * m->element[1][0]) + 
-                 (pin->z * m->element[2][0]);
+                (pin->z * m->element[2][0]);
         pout->y = (pin->x * m->element[0][1]) + (pin->y * m->element[1][1]) + 
-                 (pin->z * m->element[2][1]);
+                (pin->z * m->element[2][1]);
         pout->z = (pin->x * m->element[0][2]) + (pin->y * m->element[1][2]) + 
-                 (pin->z * m->element[2][2]);
-        return(pout);
-        }
+                (pin->z * m->element[2][2]);
+        return pout;
+}
 
 /* multiply a point by a projective matrix and return the transformed point */
-Point3 *V3MulPointByProjMatrix(pin, m, pout)
-Point3 *pin, *pout;
-Matrix4 *m;
+Point3 *V3MulPointByProjMatrix(Point3 *pin, Matrix4 *m, Point3 *pout)
 {
-double w;
+        double w;
         pout->x = (pin->x * m->element[0][0]) + (pin->y * m->element[1][0]) + 
-                 (pin->z * m->element[2][0]) + m->element[3][0];
+                (pin->z * m->element[2][0]) + m->element[3][0];
         pout->y = (pin->x * m->element[0][1]) + (pin->y * m->element[1][1]) + 
-                 (pin->z * m->element[2][1]) + m->element[3][1];
+                (pin->z * m->element[2][1]) + m->element[3][1];
         pout->z = (pin->x * m->element[0][2]) + (pin->y * m->element[1][2]) + 
-                 (pin->z * m->element[2][2]) + m->element[3][2];
+                (pin->z * m->element[2][2]) + m->element[3][2];
         w =    (pin->x * m->element[0][3]) + (pin->y * m->element[1][3]) + 
-                 (pin->z * m->element[2][3]) + m->element[3][3];
+                (pin->z * m->element[2][3]) + m->element[3][3];
         if (w != 0.0) { pout->x /= w;  pout->y /= w;  pout->z /= w; }
-        return(pout);
-        }
+        return pout;
+}
 
 /* multiply together matrices c = ab */
 /* note that c must not point to either of the input matrices */
-Matrix4 *V3MatMul(a, b, c)
-Matrix4 *a, *b, *c;
+Matrix4 *V3MatMul(Matrix4 *a, Matrix4 *b, Matrix4 *c)
 {
-int i, j, k;
+        int i, j, k;
         for (i=0; i<4; i++) {
                 for (j=0; j<4; j++) {
                         c->element[i][j] = 0;
                         for (k=0; k<4; k++) c->element[i][j] += 
                                 a->element[i][k] * b->element[k][j];
-                        }
                 }
-        return(c);
         }
+        return c;
+}
 
 /* binary greatest common divisor by Silver and Terzian.  See Knuth */
 /* both inputs must be >= 0 */
@@ -412,8 +370,7 @@ int t, f;
 
 /* return roots of ax^2+bx+c */
 /* stable algebra derived from Numerical Recipes by Press et al.*/
-int quadraticRoots(a, b, c, roots)
-double a, b, c, *roots;
+int quadraticRoots(double a, double b, double c, double *roots)
 {
 double d, q;
 int count = 0;
@@ -429,41 +386,46 @@ int count = 0;
 /* generic 1d regula-falsi step.  f is function to evaluate */
 /* interval known to contain root is given in left, right */
 /* returns new estimate */
-double RegulaFalsi(f, left, right)
-double (*f)(), left, right;
+double RegulaFalsi(double (*f)(double), double left, double right)
 {
-double d = (*f)(right) - (*f)(left);
-        if (d != 0.0) return (right - (*f)(right)*(right-left)/d);
-        return((left+right)/2.0);
-        }
+        double d = (*f)(right) - (*f)(left);
+        if (d != 0.0)
+                return right - (*f)(right)*(right-left)/d;
+        return (left+right)/2.0;
+}
 
 /* generic 1d Newton-Raphson step. f is function, df is derivative */
 /* x is current best guess for root location. Returns new estimate */
-double NewtonRaphson(f, df, x)
-double (*f)(), (*df)(), x;
+double NewtonRaphson(
+        double (*f)(double),
+        double (*df)(double),
+        double x)
 {
-double d = (*df)(x);
-        if (d != 0.0) return (x-((*f)(x)/d));
-        return(x-1.0);
-        }
-
+        double d = (*df)(x);
+        if (d != 0.0)
+                return x-((*f)(x)/d);
+        return x-1.0;
+}
 
 /* hybrid 1d Newton-Raphson/Regula Falsi root finder. */
 /* input function f and its derivative df, an interval */
 /* left, right known to contain the root, and an error tolerance */
 /* Based on Blinn */
-double findroot(left, right, tolerance, f, df)
-double left, right, tolerance;
-double (*f)(), (*df)();
+double findroot(
+                double left,
+                double right,
+                double tolerance,
+                double (*f)(double),
+                double (*df)(double))
 {
-double newx = left;
+        double newx = left;
         while (ABS((*f)(newx)) > tolerance) {
                 newx = NewtonRaphson(f, df, newx);
                 if (newx < left || newx > right) 
                         newx = RegulaFalsi(f, left, right);
                 if ((*f)(newx) * (*f)(left) <= 0.0) right = newx;  
-                        else left = newx;
-                }
-        return(newx);
-        } 
+                else left = newx;
+        }
+        return newx;
+} 
 

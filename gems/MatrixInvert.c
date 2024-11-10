@@ -18,8 +18,7 @@ from "Graphics Gems", Academic Press, 1990
  * calculate the determinant of a 2x2 matrix.
  */
 
-double det2x2( a, b, c, d)
-double a, b, c, d; 
+double det2x2(double a, double b, double c, double d)
 {
     double ans;
     ans = a * d - b * c;
@@ -37,11 +36,12 @@ double a, b, c, d;
  *     | a3,  b3,  c3 |
  */
 
-double det3x3( a1, a2, a3, b1, b2, b3, c1, c2, c3 )
-double a1, a2, a3, b1, b2, b3, c1, c2, c3;
+double det3x3(
+        double a1, double a2, double a3,
+        double b1, double b2, double b3,
+        double c1, double c2, double c3)
 {
     double ans;
-    double det2x2();
 
     ans = a1 * det2x2( b2, b3, c2, c3 )
         - b1 * det2x2( a2, a3, c2, c3 )
@@ -52,11 +52,10 @@ double a1, a2, a3, b1, b2, b3, c1, c2, c3;
 /*
  * calculate the determinant of a 4x4 matrix.
  */
-double det4x4( Matrix4* m )
+double det4x4(Matrix4* m)
 {
     double ans;
     double a1, a2, a3, a4, b1, b2, b3, b4, c1, c2, c3, c4, d1, d2, d3, 			d4;
-    double det3x3();
 
     /* assign to individual variable names to aid selecting */
 	/*  correct elements */
@@ -102,7 +101,6 @@ void adjoint(Matrix4 *in, Matrix4 *out)
 {
     double a1, a2, a3, a4, b1, b2, b3, b4;
     double c1, c2, c3, c4, d1, d2, d3, d4;
-    double det3x3();
 
     /* assign to individual variable names to aid  */
     /* selecting correct values  */
@@ -156,7 +154,7 @@ void adjoint(Matrix4 *in, Matrix4 *out)
 void inverse(Matrix4* in, Matrix4* out )
 {
     int i, j;
-    double det, det4x4();
+    double det;
 
     /* calculate the adjoint matrix */
 

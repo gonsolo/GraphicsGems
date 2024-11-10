@@ -44,10 +44,10 @@ typedef struct {short y, xl, xr, dy;} Segment;
  * A 4-connected neighbor is a pixel above, below, left, or right of a pixel.
  */
 
-void fill(x, y, win, nv)
-int x, y;	/* seed point */
-Window *win;	/* screen window */
-Pixel nv;	/* new pixel value */
+void fill(
+        int x, int y,   /* seed point */
+        Window *win,    /* screen window */
+        Pixel nv)       /* new pixel value */
 {
     int l, x1, x2, dy;
     Pixel ov;	/* old pixel value */

@@ -18,9 +18,7 @@ from "Graphics Gems", Academic Press, 1990
     * return (h,s,l) on [0 ... 1]
     */
 void
-RGB_to_HSL	(r,g,b,h,s,l)
-double 	r,g,b;
-double *h, *s, *l;
+RGB_to_HSL(double r, double g, double b, double *h, double *s, double *l)
 {
     double v;
     double m;
@@ -59,9 +57,7 @@ double *h, *s, *l;
      * return r,g,b on [0..1]
      */
 void
-HSL_to_RGB(h,sl,l,r,g,b)
-double 	h,sl,l;
-double 	*r, *g, *b;
+HSL_to_RGB(double h, double sl, double l, double *r, double *g, double *b)
 {
     double v;
 

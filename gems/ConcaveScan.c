@@ -54,11 +54,13 @@ static void cdelete(int i);
 static void cinsert(int i, int y);
 int compare_ind(const void*, const void*), compare_active(const void*, const void*);
 
-void concave(nvert, point, win, spanproc)
-int nvert;			/* number of vertices */
-Point2 *point;			/* vertices of polygon */
-Window *win;			/* screen clipping window */
-void (*spanproc)();		/* called for each span of pixels */
+typedef void (*spanprocfunc(int, int, int));
+
+void concave(
+        int nvert,              /* number of vertices */
+        Point2 *point,          /* vertices of polygon */
+        Window *win,            /* screen clipping window */
+        spanprocfunc spanproc)
 {
     int k, y0, y1, y, i, j, xl, xr;
     int *ind;		/* list of vertex indices, sorted by pt[ind[j]].y */
@@ -121,8 +123,7 @@ void (*spanproc)();		/* called for each span of pixels */
     }
 }
 
-static void cdelete(i)		/* remove edge i from active list */
-int i;
+static void cdelete(int i)		/* remove edge i from active list */
 {
     int j;
 
@@ -132,8 +133,7 @@ int i;
     memcpy(&active[j], &active[j+1], (nact-j)*sizeof active[0]);
 }
 
-static void cinsert(i, y)		/* append edge i to end of active list */
-int i, y;
+static void cinsert(int i, int y)		/* append edge i to end of active list */
 {
     int j;
     double dx;

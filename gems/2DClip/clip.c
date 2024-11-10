@@ -6,9 +6,11 @@
 #include	<stdio.h>
 #include	"GraphicsGems.h"
 #include	"line.h"
+#include <stdbool.h>
 
 void cross_calc(CONTOUR* poly, SEGMENT* l, CLIST** psol, short* nsol, short nsmax);
 void clip(CONTOUR	*p, SEGMENT	*l);
+bool	disjunct(CONTOUR *p, SEGMENT *l);
 
 #define DEBUG
 #ifdef DEBUG
@@ -33,8 +35,7 @@ void cont(long x, long y)
  *	xf, yf	from coordinates of vector to be drawn
  *	xt, yt	to coordinates of vector to be drawn
  */
-void vis_vector(xf, yf, xt, yt)
-long	xf, yf, xt, yt;
+void vis_vector(long xf, long yf, long xt, long yt)
 {
 	SEGMENT	l;
 
@@ -58,14 +59,14 @@ long	xf, yf, xt, yt;
  *	p	pointer to polygon
  *	l	pointer to line segment
  */
-void clip(p, l)
-CONTOUR	*p;
-SEGMENT	*l;
+void clip(
+CONTOUR	*p,
+SEGMENT	*l)
 {
 	SEGMENT	ss;
 	CLIST	*sol;
 	POINT	pt;
-	boolean	up, delay, inside, p_inside(), disjunct();
+	bool	up, delay, inside;
 	int	i;
 	short	nsol, nsmax = 2;
 
@@ -159,10 +160,7 @@ SEGMENT	*l;
  *	l	points to the linesegment structure	
  *
  */
-boolean	disjunct(p, l)
-CONTOUR	*p;
-SEGMENT	*l;
-
+boolean	disjunct(CONTOUR *p, SEGMENT *l)
 {
 	if((MAX(l->_from._x, l->_to._x) < p->_minx) ||
 	   (MIN(l->_from._x, l->_to._x) > p->_maxx) ||

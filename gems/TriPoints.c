@@ -22,10 +22,7 @@ Exit:
   areas - relative areas of sub-triangles of polygon
 *******************************************************************/
 
-void triangle_areas (vertices, vcount, areas)
-  	Point3 vertices[];
-	int vcount;
-  	float areas[];
+void triangle_areas(Point3 vertices[], int vcount, float areas[])
 {
   	int i;
   	float area_sum = 0;
@@ -34,7 +31,7 @@ void triangle_areas (vertices, vcount, areas)
   /* compute relative areas of the sub-triangles of polygon */
 
   	for (i = 0; i < vcount - 2; i++) {
-     	V3Sub(&vertices[i+1], &vertices[0], &v1);
+     	P3Sub(&vertices[i+1], &vertices[0], &v1);
      	V3Sub(&vertices[i+2], &vertices[0], &v2);
      	V3Cross(&v1, &v2, &v3);
      	areas[i] = (float)V3Length(&v3);
@@ -65,12 +62,13 @@ Exit:
   p - position in polygon
 *********************************************************************/
 
-void square_to_polygon (vertices, vcount, areas, s, t, p)
- 	Point3 vertices[];
-  	int vcount;
-  	float areas[];
-  	float s,t;
-  	Point3 *p;
+void square_to_polygon(
+        Point3 vertices[],
+        int vcount,
+        float areas[],
+        float s,
+        float t,
+        Point3 *p)
 { 
 	int i;
 	float area_sum = 0;
