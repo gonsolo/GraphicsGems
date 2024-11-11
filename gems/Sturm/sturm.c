@@ -17,8 +17,7 @@
  *	is 1 or -1
  */
 static int
-modp(u, v, r)
-	poly	*u, *v, *r;
+modp(poly* u, poly* v, poly* r)
 {
 	int		k, j;
 	double	*nr, *end, *uc;
@@ -64,9 +63,7 @@ modp(u, v, r)
  * the number of polynomials in the sequence
  */
 ptrdiff_t
-buildsturm(ord, sseq)
-	int		ord;
-	poly	*sseq;
+buildsturm(int ord, poly* sseq)
 {
 	int		i;
 	double	f, *fp, *fc;
@@ -111,10 +108,7 @@ buildsturm(ord, sseq)
  * described in sseq.
  */
 int
-numroots(np, sseq, atneg, atpos)
-		int		np;
-		poly	*sseq;
-		int		*atneg, *atpos;
+numroots(int np, poly* sseq, int *atneg, int *atpos)
 {
 		int		atposinf, atneginf;
 		poly	*s;
@@ -166,11 +160,7 @@ numroots(np, sseq, atneg, atpos)
  * sseq at the value a.
  */
 int
-numchanges(np, sseq, a)
-	int		np;
-	poly	*sseq;
-	double	a;
-
+numchanges(int np, poly *sseq, double a)
 {
 	int		changes;
 	double	f, lf;

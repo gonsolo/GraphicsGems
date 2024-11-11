@@ -11,9 +11,7 @@ Poly_vert *poly_dummy;		/* used superficially by POLY_MASK macro */
  * poly_print: print Poly p to stdout, prefixed by the label str
  */
 
-void poly_print(str, p)
-char *str;
-Poly *p;
+void poly_print(char *str, Poly *p)
 {
     int i;
 
@@ -25,9 +23,7 @@ Poly *p;
     }
 }
 
-void poly_vert_label(str, mask)
-char *str;
-unsigned long mask;
+void poly_vert_label(char *str, unsigned long mask)
 {
     printf("%s", str);
     if (mask&POLY_MASK(sx))   printf("   sx  ");
@@ -49,10 +45,7 @@ unsigned long mask;
     printf("\n");
 }
 
-void poly_vert_print(str, v, mask)
-char *str;
-Poly_vert *v;
-unsigned long mask;
+void poly_vert_print(char *str, Poly_vert *v, unsigned long mask)
 {
     printf("%s", str);
     if (mask&POLY_MASK(sx)) printf(" %6.1f", v->sx);

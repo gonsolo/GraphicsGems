@@ -15,9 +15,7 @@
  *	evaluate polynomial defined in coef returning its value.
  */
 double
-evalpoly (ord, coef, x)
-	int		ord;
-	double	*coef, x;
+evalpoly (int ord, double *coef, double x)
 {
 	double	*fp, f;
 
@@ -25,11 +23,10 @@ evalpoly (ord, coef, x)
 	f = *fp;
 
 	for (fp--; fp >= coef; fp--)
-	f = x * f + *fp;
+	        f = x * f + *fp;
 
-	return(f);
+	return f;
 }
-
 
 /*
  * modrf
@@ -40,10 +37,7 @@ evalpoly (ord, coef, x)
  * if it can't converge.
  */
 int
-modrf(ord, coef, a, b, val)
-	int		ord;
-	double	*coef;
-	double	a, b, *val;
+modrf(int ord, double *coef, double a, double b, double *val)
 {
 	int		its;
 	double	fa, fb, x, fx, lfx;

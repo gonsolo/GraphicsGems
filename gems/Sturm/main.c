@@ -13,7 +13,7 @@ from "Graphics Gems", Academic Press, 1990
  */
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+//#include <math.h>
 #include "solve.h"
 
 /*

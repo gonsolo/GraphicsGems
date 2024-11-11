@@ -333,9 +333,7 @@ Pixel	*p;
  * (e.g. SMPTE 240M's "electro-optic transfer characteristic").
  */
 
-double
-gc(x)
-double	x;
+double gc(double x)
 {
 	extern double	pow();
 
@@ -343,8 +341,7 @@ double	x;
 }
 
 double
-inv_gc(x)
-double	x;
+inv_gc( double x)
 {
 	extern double	pow();
 
@@ -363,15 +360,13 @@ double	x;
  */
 
 double
-pix_decode(v)
-int	v;
+pix_decode(int v)
 {
 	return (double)v / MAXPIX;
 }
 
 int
-pix_encode(v)
-double	v;
+pix_encode(double v)
 {
 	return (int)(v * MAXPIX + 0.5);
 }

@@ -14,7 +14,7 @@
 /* frame buffer to hold the anti-aliased line */
 #define xpix 60
 #define ypix 60
-extern char *fbuff;
+extern unsigned char *fbuff;
 
 /* macros to access the frame buffer */
 #define PIXADDR(xx,yy) (fbuff+(yy)*xpix+(xx))

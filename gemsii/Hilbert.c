@@ -24,8 +24,7 @@ void step(long angle)
 /* LEVEL is the recursion level                                    */
 /* 2^LEVEL by 2^LEVEL points will be visited in total              */
 
-void hilbert (orient,angle,level)
-long orient,*angle,level;
+void hilbert(long orient, long *angle, long level)
 {
    if (level-- <= 0) return;
    *angle += orient * 90;
@@ -45,8 +44,7 @@ long orient,*angle,level;
 /* Same parameters as Hilbert above  */
 /* 3^LEVEL by 3^LEVEL points visited */
 
-void peano (orient,angle,level)
-long orient,*angle,level;
+void peano (long orient, long *angle, long level)
 {
    if (level-- <= 0) return;
    peano(orient,angle,level);

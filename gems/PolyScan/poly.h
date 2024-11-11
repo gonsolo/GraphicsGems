@@ -48,11 +48,12 @@ typedef struct {		/* WINDOW: A DISCRETE 2-D RECTANGLE */
 
 extern Poly_vert *poly_dummy;	/* used superficially by POLY_MASK macro */
 
-void	poly_print(/* str, p */);
-void	poly_vert_label(/* str, mask */);
-void	poly_vert_print(/* str, v, mask */);
-int	poly_clip_to_box(/* p1, box */);
-void	poly_clip_to_halfspace(/* p, q, index, sign, k, name */);
-void	poly_scan(/* p, win, pixelproc */);
+void	poly_print(char*, Poly*);
+void	poly_vert_label(char*, unsigned long);
+void	poly_vert_print(char*, Poly_vert*, unsigned long);
+int	poly_clip_to_box(Poly*, Poly_box*);
+void    poly_clip_to_halfspace(Poly *p, Poly *q, int index, double sign, double k);
+void	poly_scan(Poly*, Window*, void (*)(int, int, Poly_vert*));
 
 #endif
+

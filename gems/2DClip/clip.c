@@ -4,7 +4,7 @@
  */
 #include	<stdlib.h>
 #include	<stdio.h>
-#include	"GraphicsGems.h"
+#include	"../GraphicsGems.h"
 #include	"line.h"
 #include <stdbool.h>
 
@@ -160,7 +160,7 @@ SEGMENT	*l)
  *	l	points to the linesegment structure	
  *
  */
-boolean	disjunct(CONTOUR *p, SEGMENT *l)
+bool disjunct(CONTOUR *p, SEGMENT *l)
 {
 	if((MAX(l->_from._x, l->_to._x) < p->_minx) ||
 	   (MIN(l->_from._x, l->_to._x) > p->_maxx) ||

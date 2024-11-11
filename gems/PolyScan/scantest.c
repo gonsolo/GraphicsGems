@@ -9,7 +9,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+//#include <math.h>
 #include "poly.h"
 
 #define XMAX 1280	/* hypothetical image width */
@@ -18,7 +18,6 @@
 #define FRANDOM() ((rand()&32767)/32767.)   /* random number between 0 and 1 */
 
 static void pixelproc(int x, int y, Poly_vert *point);
-void pixelproc();
 
 int main(int ac, char** av)
 {
@@ -47,9 +46,7 @@ int main(int ac, char** av)
     poly_scan(&p, &win, pixelproc);	/* scan convert! */
 }
 
-static void pixelproc(x, y, point)	/* called at each pixel by poly_scan */
-int x, y;
-Poly_vert *point;
+static void pixelproc(int x, int y, Poly_vert *point)	/* called at each pixel by poly_scan */
 {
     printf("pixel (%d,%d) screenz=%g rgb=(%g,%g,%g)\n",
 	x, y, point->sz, point->r, point->g, point->b);

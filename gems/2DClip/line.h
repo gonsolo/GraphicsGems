@@ -1,10 +1,10 @@
-
 /*
 Two-Dimensional Clipping: A Vector Based Approach
 by Hans Spoelder and Fons Ullings
 from "Graphics Gems", Academic Press, 1990
 */
 
+#include <stdbool.h>
 
 /*
  * file line.h
@@ -78,4 +78,6 @@ extern	CONTOUR	*CL;
 CONTOUR	*get_contour_ptr(int);
 
 extern	short	C_COUNT;
+
+bool	p_inside(CONTOUR *p, POINT *pt);
  

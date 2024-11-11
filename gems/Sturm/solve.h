@@ -34,11 +34,11 @@ typedef  	struct	p {
 		     double	coef[MAX_ORDER+1];
 } poly;
 
-extern 	int		modrf();
-extern 	int		numroots();
-extern 	int		numchanges();
-extern 	ptrdiff_t buildsturm();
+extern 	int		modrf(int, double*, double, double, double*);
+extern 	int		numroots(int, poly*, int*, int*);
+extern 	int		numchanges(int, poly*, double);
+extern 	ptrdiff_t buildsturm(int, poly*);
 
-extern 	double	evalpoly();
+extern 	double	evalpoly(int, double*, double);
 	
 

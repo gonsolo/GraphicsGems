@@ -17,7 +17,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+//#include <math.h>
 #include "AALines.h"
 #include "utah.h"
 
@@ -27,7 +27,7 @@ void Anti_Line(int X1, int Y1, int X2, int Y2);
 int main(int argc, char** argv )
 {
 int i;
-char *scanptr;
+unsigned char *scanptr;
 int x1,y1,x2,y2;
 
 /* initialize frame buffer and look-up tables */

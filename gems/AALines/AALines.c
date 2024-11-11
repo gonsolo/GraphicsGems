@@ -91,7 +91,7 @@ FX 		Pmid,  	/* perp distance at Bresenham's pixel */
    		Painc, 	/* adjacent-increment for 'Pmid' */
    		Pdinc, 	/* diagonal-increment for 'Pmid' */
    		Poinc; 	/* orthogonal-increment for 'Pnow'--also equals 'k' */
-char 	*mid_addr,   /* pixel address for Bresenham's pixel */
+unsigned char 	*mid_addr,   /* pixel address for Bresenham's pixel */
      	*now_addr;   /* pixel address for current pixel */
 size_t 	addr_ainc,   /* adjacent pixel address offset */
     	addr_dinc,   /* diagonal pixel address offset */
@@ -158,13 +158,13 @@ do
   	if ( Bvar < 0 )
     	{
     	Bvar += Bainc;
-    	mid_addr = (char *) ((size_t)mid_addr + addr_ainc);
+    	mid_addr = (unsigned char *) ((size_t)mid_addr + addr_ainc);
     	Pmid += Painc;
     	}
   	else
     	{
     	Bvar += Bdinc;
-    	mid_addr = (char *) ((size_t)mid_addr + addr_dinc);
+    	mid_addr = (unsigned char *) ((size_t)mid_addr + addr_dinc);
     	Pmid += Pdinc;
     	}
 

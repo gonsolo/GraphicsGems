@@ -5,7 +5,7 @@
 	date:		October 27, 1989
 */
 
-#include <math.h>
+//#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef sequent
@@ -25,10 +25,7 @@ int utah_read_close(UTAH_FILE *ufp)
 /******************************************************************************/
 
 UTAH_FILE *
-utah_read_init(fname, ht, wd)
-
-char	*fname;
-int	*ht, *wd;
+utah_read_init(char *fname, int *ht, int *wd)
 {
 	FILE		*fp;
 	UTAH_FILE	*ufp;
@@ -121,10 +118,7 @@ int utah_write_close(UTAH_FILE	*ufp)
 /******************************************************************************/
 
 UTAH_FILE *
-utah_write_init(fname, ht, wd)
-
-char	*fname;
-int	ht, wd;
+utah_write_init(char *fname, int ht, int wd)
 {
 	FILE		*fp;
 	UTAH_FILE	*ufp;
@@ -154,7 +148,7 @@ int	ht, wd;
 
 /******************************************************************************/
 
-int utah_write_pixels(UTAH_FILE *ufp, unsigned char	pixels[][3])
+int utah_write_pixels(UTAH_FILE *ufp, unsigned char pixels[][3])
 {
 	static unsigned	n = 0;
 	static unsigned char	*r = NULL, *g = NULL, *b = NULL;

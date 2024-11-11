@@ -38,9 +38,7 @@
  * (n+6)gon, so POLY_NMAX in poly.h must be big enough to allow that.
  */
 
-int poly_clip_to_box(p1, box)
-register Poly *p1;
-register Poly_box *box;
+int poly_clip_to_box(Poly *p1, Poly_box *box)
 {
     int x0out = 0, x1out = 0, y0out = 0, y1out = 0, z0out = 0, z1out = 0;
     register int i;
@@ -108,10 +106,7 @@ register Poly_box *box;
  *	poly_clip_to_halfspace(p, q, XINDEX,  1.,  xmax);
  */
 
-void poly_clip_to_halfspace(p, q, index, sign, k)
-Poly *p, *q;
-register int index;
-double sign, k;
+void poly_clip_to_halfspace(Poly *p, Poly *q, int index, double sign, double k)
 {
     register unsigned long m;
     register double *up, *vp, *wp;

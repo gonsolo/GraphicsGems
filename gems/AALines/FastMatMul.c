@@ -43,10 +43,10 @@ typedef struct Matrix4Struct {	/* 4-by-4 matrix */
 	} Matrix4;
 
 /* routines in this file */
-Matrix3 *V2MatMul();     /* general 3x3 matrix multiplier */
-Matrix4 *V3MatMul();     /* general 4x4 matrix multiplier */
-Matrix4 *V3AffMatMul();  /* affine 4x4 matrix multiplier */
-Matrix4 *V3LinMatMul();  /* linear 4x4 matrix multiplier */
+Matrix3 *V2MatMul (Matrix3 *a, Matrix3 *b, Matrix3 *result);      /* general 3x3 matrix multiplier */
+Matrix4 *V3MatMul (Matrix4 *a, Matrix4 *b, Matrix4 *result );     /* general 4x4 matrix multiplier */
+Matrix4 *V3AffMatMul (Matrix4 *a, Matrix4 *b, Matrix4 *result );  /* affine 4x4 matrix multiplier */
+Matrix4 *V3LinMatMul (Matrix4 *a, Matrix4 *b, Matrix4 *result );
 
 /* macro to access matrix element */
 #define MVAL(mptr,row,col)  ((mptr)->element[row][col])
@@ -74,9 +74,7 @@ Matrix4 *V3LinMatMul();  /* linear 4x4 matrix multiplier */
     EXIT:  returns 'result'
 */
 
-Matrix3 *V2MatMul ( a, b, result )
-register Matrix3 *a,*b;
-Matrix3 *result;
+Matrix3 *V2MatMul (Matrix3 *a, Matrix3 *b, Matrix3 *result)
 {
 register Matrix3 *mptr;
 int usetemp;  /* boolean */
@@ -163,9 +161,7 @@ return result;
     EXIT:  returns 'result'
 */
 
-Matrix4 *V3MatMul ( a, b, result )
-register Matrix4 *a,*b;
-Matrix4 *result;
+Matrix4 *V3MatMul (Matrix4 *a, Matrix4 *b, Matrix4 *result )
 {
 register Matrix4 *mptr;
 int usetemp;  /* boolean */
@@ -308,9 +304,7 @@ return result;
     EXIT:  returns 'result'
 */
 
-Matrix4 *V3AffMatMul ( a, b, result )
-register Matrix4 *a,*b;
-Matrix4 *result;
+Matrix4 *V3AffMatMul (Matrix4 *a, Matrix4 *b, Matrix4 *result )
 {
 register Matrix4 *mptr;
 int usetemp;  /* boolean */
@@ -429,9 +423,7 @@ return result;
     EXIT:  returns 'result'
 */
 
-Matrix4 *V3LinMatMul ( a, b, result )
-register Matrix4 *a,*b;
-Matrix4 *result;
+Matrix4 *V3LinMatMul (Matrix4 *a, Matrix4 *b, Matrix4 *result )
 {
 register Matrix4 *mptr;
 int usetemp;  /* boolean */

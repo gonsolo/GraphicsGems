@@ -3,15 +3,16 @@
  * file cross.c:
  *	calculate the intersections
  */
-#include	<stdlib.h>
-#include	<math.h>
-#include	"GraphicsGems.h"
-#include	"line.h"
-#include	"box.h"
-
+#include <stdbool.h>
+#include <stdlib.h>
+//#include <math.h>
+#include "../GraphicsGems.h"
+#include "line.h"
+#include "box.h"
 
 int p_where(POINT* p1, POINT* p2, SEGMENT* l);
 int ggpsort(const void* a, const void* b);
+bool on_contour(CONTOUR *p, POINT *pt);
 
 /*
  * cross_calc:
@@ -227,14 +228,12 @@ int p_where(POINT* p1, POINT* p2, SEGMENT* l)
  *	p	pointer to the polygon
  *	pt	pointer to the point
  */	
-boolean	p_inside(p, pt)
-CONTOUR	*p;
-POINT	*pt;
+bool	p_inside(CONTOUR *p, POINT *pt)
 {
 	SEGMENT	l;
 	CLIST	*sol;
 	short	nsol = 0, nsmax = 2, reduce = 0, i;
-	boolean	on_contour(), odd;
+	bool odd;
 	
 	l._from._x = p->_minx-2;
 	l._from._y = pt->_y;
@@ -247,7 +246,7 @@ POINT	*pt;
 			reduce++;
 	free(sol);
 	odd = (nsol - reduce) & 0x01;
-	return(odd ? !on_contour(p, pt) : FALSE);
+	return(odd ? !on_contour(p, pt) : false);
 }
 
 /*
@@ -264,7 +263,6 @@ int ggpsort(const void* a, const void* b)
 		return(p1->_p._y - p2->_p._y);
 }
 
-
 /*
  * on_contour
  *
@@ -278,9 +276,7 @@ int ggpsort(const void* a, const void* b)
  *	p	pointer to the polygon structure
  *	pt	pointer to the point
  */
-boolean	on_contour(p, pt)
-CONTOUR	*p;
-POINT	*pt;
+bool on_contour(CONTOUR *p, POINT *pt)
 {
 	SEGMENT	*sp;
 	long	dx1, dy1, dx2, dy2;

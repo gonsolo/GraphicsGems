@@ -120,8 +120,7 @@ int		line = 1;	/* current line on page (one based) */
 int		firstline = 18;	/* first line of first page (one based) */
 
 char *
-ps_string(s)
-char *s;
+ps_string(char *s)
 {
 	static char ps_buf[512];
 	char *p = ps_buf;
@@ -140,8 +139,7 @@ char *s;
 }
 
 void
-start_listing(f)
-FILE *f;
+start_listing(FILE *f)
 {
 	line = firstline;
 	fprintf(f, "%s%s\n", psPreamble, (draft ? psDraft : psFinal));
@@ -153,8 +151,7 @@ FILE *f;
 }
 
 void
-page_eject(f)
-FILE *f;
+page_eject(FILE *f)
 {
 	++page;
 	line = 1;
@@ -162,8 +159,7 @@ FILE *f;
 }
 
 void
-new_line(f)
-FILE *f;
+new_line(FILE *f)
 {
 	++line;
 	if(line > LPP) {
@@ -174,8 +170,7 @@ FILE *f;
 }
 
 void
-end_listing(f)
-FILE *f;
+end_listing(FILE *f)
 {
 	fprintf(f, "EP\n\n%% end of listing\n");
 }
@@ -207,8 +202,7 @@ static char *keywords[] = {
 };
 
 int
-iskeyword(s)
-char *s;
+iskeyword(char* s)
 {
 	char **p;
 
@@ -225,17 +219,14 @@ static int pbchar = 0;
 static int pbflag = 0;
 
 int
-push_back(f, c)
-FILE *f;
-int c;
+push_back(FILE *f, int c)
 {
 	pbflag = 1;
 	return(pbchar = c);
 }
 
 int
-next_char(f)
-FILE *f;
+next_char(FILE *f)
 {
 	static int col = 0;
 	int c;
@@ -268,8 +259,7 @@ FILE *f;
 char	token[256];
 
 int
-next_token(f)
-FILE *f;
+next_token(FILE *f)
 {
 	static int state = TK_EMPTY;
 	static int qchar = '"';
@@ -449,9 +439,7 @@ FILE *f;
 #define	ITALIC_FONT	(2)
 
 void
-list(fi, fo)
-FILE *fi;
-FILE *fo;
+list(FILE *fi, FILE *fo)
 {
 	int tk, ptk;
 	int font = ROMAN_FONT;

@@ -18,7 +18,7 @@ extern void Anti_Init();
 static void Sqrt_Init();
 
 /* globals defined here */
-char *fbuff;
+unsigned char *fbuff;
 UFX *sqrtfunc=0;
 int sqrtcells=1024;
 int sqrtshift;
@@ -65,7 +65,7 @@ double inv_log_2;
 extern FX Pmax;
 
 /* alloc & init frame buffer */
-fbuff = (char *) malloc( xpix*ypix );
+fbuff = (unsigned char *) malloc( xpix*ypix );
   {
   register int i;
   for ( i=xpix*ypix-1; i>=0; --i )  fbuff[i] = 0;

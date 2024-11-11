@@ -111,12 +111,7 @@ void poly_scan(Poly* p, Window* win, void (*pixelproc)())
 
 /* scanline: output scanline by sampling polygon at Y=y+.5 */
 
-static void scanline(y, l, r, win, pixelproc, mask)
-int y;
-unsigned long mask;
-Poly_vert *l, *r;
-Window *win;
-void (*pixelproc)();
+static void scanline(int y, Poly_vert *l, Poly_vert *r, Window *win, void (*pixelproc)(int, int, Poly_vert*), unsigned long mask)
 {
     int x, lx, rx;
     Poly_vert p, dp;
@@ -139,10 +134,7 @@ void (*pixelproc)();
  * p1 and p2 in p, put change with respect to y in dp
  */
 
-static void incrementalize_y(p1, p2, p, dp, y, mask)
-register double *p1, *p2, *p, *dp;
-register unsigned long mask;
-int y;
+static void incrementalize_y(double *p1, double *p2, double *p, double *dp, int y, unsigned long mask)
 {
     double dy, frac;
 
@@ -162,10 +154,7 @@ int y;
  * p1 and p2 in p, put change with respect to x in dp
  */
 
-static void incrementalize_x(p1, p2, p, dp, x, mask)
-register double *p1, *p2, *p, *dp;
-register unsigned long mask;
-int x;
+static void incrementalize_x(double *p1, double *p2, double *p, double *dp, int x, unsigned long mask)
 {
     double dx, frac;
 
@@ -180,9 +169,7 @@ int x;
 	}
 }
 
-static void increment(p, dp, mask)
-register double *p, *dp;
-register unsigned long mask;
+static void increment(double *p, double *dp, unsigned long mask)
 {
     for (; mask!=0; mask>>=1, p++, dp++)
 	if (mask&1)
