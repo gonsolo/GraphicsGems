@@ -18,9 +18,7 @@
  * Returns 1 upon success, 0 if the matrix is singular.
  */
 int
-unmatrix( mat, tran )
-Matrix4 *mat;
-double tran[16];
+unmatrix(Matrix4 *mat, double tran[16])
 {
  	register int i, j;
  	Matrix4 locmat;
@@ -144,8 +142,7 @@ double tran[16];
 
 
 /* transpose rotation portion of matrix a, return b */
-Matrix4 *TransposeMatrix4(a, b)
-Matrix4 *a, *b;
+Matrix4 *TransposeMatrix4(Matrix4 *a, Matrix4 *b)
 {
 int i, j;
 	for (i=0; i<4; i++)

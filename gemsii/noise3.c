@@ -27,9 +27,11 @@
 #define  hpoly3(t)	((t-2.0)*t+1.0)*t
 #define  hpoly4(t)	(t-1.0)*t*t
 
-double  *noise3(), fnoise3(), frand();
+double * noise3(double xnew[3]);
+double fnoise3(double p[3]);
+double frand(long s);
 
-static  void interpolate();
+static void interpolate(double f[4], int i, int n);
 
 static long  xlim[3][2];
 static double  xarg[3];
@@ -39,9 +41,7 @@ static double  xarg[3];
 #define  frand3(x,y,z)	frand(17*(x)+23*(y)+29*(z))
 
 
-double *
-noise3(xnew)			/* compute the noise function */
-register double  xnew[3];
+double * noise3(double xnew[3])			/* compute the noise function */
 {
 	extern double  floor();
 	static double  x[3] = {-100000.0, -100000.0, -100000.0};
@@ -62,9 +62,7 @@ register double  xnew[3];
 
 
 static
-void interpolate(f, i, n)
-double  f[4];
-register int  i, n;
+void interpolate(double f[4], int i, int n)
 {
 	double  f0[4], f1[4], hp1, hp2;
 
@@ -87,18 +85,14 @@ register int  i, n;
 }
 
 
-double
-frand(s)			/* get random number from seed */
-register long  s;
+double frand(long s)			/* get random number from seed */
 {
 	s = s<<13 ^ s;
 	return(1.0-((s*(s*s*15731+789221)+1376312589)&0x7fffffff)/1073741824.0);
 }
 
 
-double
-fnoise3(p)			/* compute fractal noise function */
-double  p[3];
+double fnoise3(double p[3])			/* compute fractal noise function */
 {
 	double  floor();
 	long  t[3], v[3], beg[3];

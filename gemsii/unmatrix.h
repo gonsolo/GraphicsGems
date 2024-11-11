@@ -32,5 +32,4 @@ typedef struct {
 	double x,y,z,w;
 } Vector4;
 
-Matrix4 *TransposeMatrix4();
 Vector4 *V4MulPointByMatrix();

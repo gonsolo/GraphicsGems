@@ -58,9 +58,8 @@
  *   C1        C2        C3        C4        C5        C6                  *
  *                                                                         *
  *-------------------------------------------------------------------------*/
-unsigned int classify_matrix( M )
-Matrix3  M;
-    {
+unsigned int classify_matrix(Matrix3 M)
+{
     unsigned int form = 0xFFFF;
 
     /* Classify based on the diagonal elements. */
@@ -113,12 +112,12 @@ Matrix3  M;
  * saved in this implementation -- just time.                              *
  *                                                                         *
  *-------------------------------------------------------------------------*/
-void sparse_transform( M, form, v, w )
-Matrix3 M;
-unsigned int form;
-Vector3 *v;
-Vector3 *w;
-    {
+void sparse_transform(
+        Matrix3 M,
+        unsigned int form,
+        Vector3 *v,
+        Vector3 *w)
+{
     switch( form )
         {
         case P1:

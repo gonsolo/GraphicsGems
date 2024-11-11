@@ -38,9 +38,7 @@
  ***/
 
 boolean
-affine_matrix4_inverse (in, out)
-    register  Matrix4  *in;
-    register  Matrix4  *out;
+affine_matrix4_inverse(Matrix4 *in, Matrix4 *out)
 {
     register  double    det_1;
               double    pos, neg, temp;

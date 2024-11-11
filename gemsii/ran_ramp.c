@@ -188,7 +188,7 @@ int dda_blue()
 
 void save_lut()
 {
-	FILE           *fp, *fopen();
+	FILE           *fp;
 	char            filename[40];
 	int             i;
 
@@ -215,11 +215,9 @@ void fb_setmap(int a, int b, unsigned char* c, unsigned char* d, unsigned char* 
 void fb_done() {
 	// TODO
 }
-int main(argc, argv)
-int             argc;
-char           *argv[];
-{
 
+int main(int argc, char *argv[])
+{
 	register int    i;
 	int             reply, delay;
 

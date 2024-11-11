@@ -37,9 +37,7 @@ table(ltab5,2)
 table(ltab6,1)
 table(ltab7,0)
 
-void rotate8x8(src, srcstep, dst, dststep)
-	unsigned char	*src, *dst;
-	int		srcstep, dststep;
+void rotate8x8(unsigned char* src, int srcstep, unsigned char* dst, int dststep)
 {
 	register unsigned char	*p;
 	register int	pstep, lownyb, hinyb;

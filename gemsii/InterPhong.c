@@ -100,10 +100,7 @@ ScanBufType _scanbuffer;		/* Z-buffer */
 DepthBufType _depthbuffer;
 
 static
-void intphong(nestime, noriginal, bias, tension)
-Vector3 *nestime, *noriginal;
-double bias, tension;
-
+void intphong(Vector3 *nestime, Vector3 *noriginal, double bias, double tension)
 /*
     Purpose: interphong interpolation
     Arguments
@@ -111,31 +108,27 @@ double bias, tension;
 	noriginal	: original normal
 	bias, tension	: bias and tension 
 */
-
 {
 	double fact;
 	Vector3	vtemp;
 
-	V3Sub (noriginal, nestime, &vtemp);
+	V3Sub(noriginal, nestime, &vtemp);
 	fact = fabs(vtemp.x) + fabs(vtemp.y) + fabs(vtemp.z);
 	fact = (fact + bias * (SQRT3_2 - fact)) * tension;
-	V3Scale (vtemp,fact*V3Length (vtemp));
+	V3Scale (&vtemp,fact*V3Length (&vtemp));
 	V3Add (nestime, &vtemp,nestime); 
 	V3Normalize (nestime);
 }
 
 /*===========================================================*/
 
-void shadepoly(ptpoly)
-BlockPoly	*ptpoly;
-
+void shadepoly(BlockPoly *ptpoly)
 /*
     Purpose: shades a polygon on the current scanline
     Arguments
 	ptpoly		: polygon to render
 	noscline	: current scanline
 */
-
 {
 	BlockEdge	*edge1, *edge2;
 	PtEdge	*tripedtrie;

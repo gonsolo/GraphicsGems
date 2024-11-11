@@ -28,13 +28,14 @@ typedef struct Point4Struct {	/* 4d point */
 #define	FRONTFACE	 1
 #define	BACKFACE	-1
 
-int	RayCvxPolyhedronInt( org, dir, tmax, phdrn, ph_num, tresult, norm )
-Point3	*org, *dir ;	/* origin and direction of ray */
-double	tmax ;		/* maximum useful distance along ray */
-Point4	*phdrn ;	/* list of planes in convex polyhedron */
-int	ph_num ;	/* number of planes in convex polyhedron */
-double	*tresult ;	/* returned: distance of intersection along ray */
-Point3	*norm ;		/* returned: normal of face hit */
+int RayCvxPolyhedronInt(
+        Point3 *org,
+        Point3 *dir,	        /* origin and direction of ray */
+        double tmax,		/* maximum useful distance along ray */
+        Point4	*phdrn,	        /* list of planes in convex polyhedron */
+        int ph_num,	        /* number of planes in convex polyhedron */
+        double *tresult,	/* returned: distance of intersection along ray */
+        Point3	*norm) 		/* returned: normal of face hit */
 {
 Point4	*pln ;			/* plane equation */
 double	tnear, tfar, t, vn, vd ;

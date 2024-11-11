@@ -105,8 +105,11 @@ double	compos_lim;             /* composite amplitude limit */
 long	ichroma_lim2;           /* chroma limit squared (scaled integer) */
 int	icompos_lim;            /* composite amplitude limit (scaled integer) */
 
-double	pix_decode(), gc(), inv_gc();
-int	pix_encode(), hot();
+double gc(double x);
+double pix_decode(int v);
+double inv_gc(double x);
+int pix_encode(double v);
+int hot(Pixel *p);
 
 /*
  * build_tab: Build multiply lookup table.
@@ -155,9 +158,7 @@ void build_tab()
 	icompos_lim = (int)(compos_lim * SCALE + 0.5);
 }
 
-int
-hot(p)
-Pixel	*p;
+int hot(Pixel *p)
 {
 	register int	r, g, b;
 	register int	y, i, q;
@@ -340,8 +341,7 @@ double gc(double x)
 	return pow(x, 1.0 / GAMMA);
 }
 
-double
-inv_gc( double x)
+double inv_gc(double x)
 {
 	extern double	pow();
 
@@ -359,14 +359,12 @@ inv_gc( double x)
  * these routines if you use a different pixel encoding technique.
  */
 
-double
-pix_decode(int v)
+double pix_decode(int v)
 {
 	return (double)v / MAXPIX;
 }
 
-int
-pix_encode(double v)
+int pix_encode(double v)
 {
 	return (int)(v * MAXPIX + 0.5);
 }

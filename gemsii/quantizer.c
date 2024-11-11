@@ -52,15 +52,13 @@ int		K;    /*color look-up table size*/
 unsigned short int *Qadd;
 
 void
-Hist3d(vwt, vmr, vmg, vmb, m2) 
+Hist3d(long int *vwt, long int *vmr, long int *vmg, long int *vmb, float *m2) 
 /* build 3-D color histogram of counts, r/g/b, c^2 */
-long int *vwt, *vmr, *vmg, *vmb;
-float	*m2;
 {
-register int ind, r, g, b;
-int	     inr, ing, inb, table[256];
-int i;
-		
+        register int ind, r, g, b;
+        int	     inr, ing, inb, table[256];
+        int i;
+
 	for(i=0; i<256; ++i) table[i]=i*i;
 	Qadd = (unsigned short int *)malloc(sizeof(short int)*size);
 	if (Qadd==NULL) {printf("Not enough space\n"); exit(1);}
@@ -93,53 +91,49 @@ int i;
 
 
 void
-M3d(vwt, vmr, vmg, vmb, m2) /* compute cumulative moments. */
-long int *vwt, *vmr, *vmg, *vmb;
-float	*m2;
+M3d(long int *vwt, long int *vmr, long int *vmg, long int *vmb, float *m2) /* compute cumulative moments. */
 {
-register unsigned short int ind1, ind2;
-register unsigned char i, r, g, b;
-long int line, line_r, line_g, line_b,
-	 area[33], area_r[33], area_g[33], area_b[33];
-float    line2, area2[33];
+        register unsigned short int ind1, ind2;
+        register unsigned char i, r, g, b;
+        long int line, line_r, line_g, line_b,
+             area[33], area_r[33], area_g[33], area_b[33];
+        float    line2, area2[33];
 
-    for(r=1; r<=32; ++r){
-	for(i=0; i<=32; ++i)
-	{
-		area2[i]=0.0f;
-		area[i]=area_r[i]=area_g[i]=area_b[i]=0;
-	}
-	for(g=1; g<=32; ++g){
-		line2 = 0.0f;
-		line = line_r = line_g = line_b = 0;
-	    for(b=1; b<=32; ++b){
-		ind1 = (r<<10) + (r<<6) + r + (g<<5) + g + b; /* [r][g][b] */
-		line += vwt[ind1];
-		line_r += vmr[ind1]; 
-		line_g += vmg[ind1]; 
-		line_b += vmb[ind1];
-		line2 += m2[ind1];
-		area[b] += line;
-		area_r[b] += line_r;
-		area_g[b] += line_g;
-		area_b[b] += line_b;
-		area2[b] += line2;
-		ind2 = ind1 - 1089; /* [r-1][g][b] */
-		vwt[ind1] = vwt[ind2] + area[b];
-		vmr[ind1] = vmr[ind2] + area_r[b];
-		vmg[ind1] = vmg[ind2] + area_g[b];
-		vmb[ind1] = vmb[ind2] + area_b[b];
-		m2[ind1] = m2[ind2] + area2[b];
-	    }
-	}
-    }
+        for(r=1; r<=32; ++r){
+                for(i=0; i<=32; ++i)
+                {
+                        area2[i]=0.0f;
+                        area[i]=area_r[i]=area_g[i]=area_b[i]=0;
+                }
+                for(g=1; g<=32; ++g){
+                        line2 = 0.0f;
+                        line = line_r = line_g = line_b = 0;
+                        for(b=1; b<=32; ++b){
+                                ind1 = (r<<10) + (r<<6) + r + (g<<5) + g + b; /* [r][g][b] */
+                                line += vwt[ind1];
+                                line_r += vmr[ind1]; 
+                                line_g += vmg[ind1]; 
+                                line_b += vmb[ind1];
+                                line2 += m2[ind1];
+                                area[b] += line;
+                                area_r[b] += line_r;
+                                area_g[b] += line_g;
+                                area_b[b] += line_b;
+                                area2[b] += line2;
+                                ind2 = ind1 - 1089; /* [r-1][g][b] */
+                                vwt[ind1] = vwt[ind2] + area[b];
+                                vmr[ind1] = vmr[ind2] + area_r[b];
+                                vmg[ind1] = vmg[ind2] + area_g[b];
+                                vmb[ind1] = vmb[ind2] + area_b[b];
+                                m2[ind1] = m2[ind2] + area2[b];
+                        }
+                }
+        }
 }
 
 
-long int Vol(cube, mmt)
 /* Compute sum over a box of any given statistic */
-struct box *cube;
-long int mmt[33][33][33];
+long int Vol(struct box *cube, long int mmt[33][33][33])
 {
     return( mmt[cube->r1][cube->g1][cube->b1] 
 	   -mmt[cube->r1][cube->g1][cube->b0]
@@ -157,12 +151,9 @@ long int mmt[33][33][33];
  * and with the specified new upper bound.
  */
 
-long int Bottom(cube, dir, mmt)
 /* Compute part of Vol(cube, mmt) that doesn't depend on r1, g1, or b1 */
 /* (depending on dir) */
-struct box *cube;
-unsigned char dir;
-long int mmt[33][33][33];
+long int Bottom(struct box *cube, unsigned char dir, long int mmt[33][33][33])
 {
     switch(dir){
 	default:
@@ -188,13 +179,9 @@ long int mmt[33][33][33];
 }
 
 
-long int Top(cube, dir, pos, mmt)
 /* Compute remainder of Vol(cube, mmt), substituting pos for */
 /* r1, g1, or b1 (depending on dir) */
-struct box *cube;
-unsigned char dir;
-int   pos;
-long int mmt[33][33][33];
+long int Top(struct box *cube, unsigned char dir, int   pos, long int mmt[33][33][33])
 {
     switch(dir){
 	default:
@@ -220,10 +207,9 @@ long int mmt[33][33][33];
 }
 
 
-float Var(cube)
 /* Compute the weighted variance of a box */
 /* NB: as with the raw statistics, this is really the variance * size */
-struct box *cube;
+float Var(struct box *cube)
 {
 float dr, dg, db, xx;
 float result;
@@ -252,12 +238,16 @@ float result;
  */
 
 
-float Maximize(cube, dir, first, last, cut,
-		whole_r, whole_g, whole_b, whole_w)
-struct box *cube;
-unsigned char dir;
-int first, last, *cut;
-long int whole_r, whole_g, whole_b, whole_w;
+float Maximize(
+        struct box *cube,
+        unsigned char dir,
+        int first,
+        int last,
+        int *cut,
+        long int whole_r,
+        long int whole_g,
+        long int whole_b,
+        long int whole_w)
 {
 register long int half_r, half_g, half_b, half_w;
 long int base_r, base_g, base_b, base_w;
@@ -298,8 +288,7 @@ register float temp, max;
 }
 
 int
-Cut(set1, set2)
-struct box *set1, *set2;
+Cut(struct box *set1, struct box *set2)
 {
 unsigned char dir;
 int cutr, cutg, cutb;
@@ -355,10 +344,7 @@ long int whole_r, whole_g, whole_b, whole_w;
 }
 
 
-void Mark(cube, label, tag)
-struct box *cube;
-int label;
-unsigned char *tag;
+void Mark(struct box *cube, int label, unsigned char *tag)
 {
 register int r, g, b;
 
